@@ -59,7 +59,7 @@ const authOptions: NextAuthOptions = {
             if(account?.provider == 'credentials'){
                 return true
             }
-            
+
             if(!profile?.email){
                 throw new Error('No profile')
             }
@@ -101,6 +101,9 @@ const authOptions: NextAuthOptions = {
             }
             return token
         }
+    },
+    pages: {
+        signIn: '/login'
     },
     debug: true
 }
