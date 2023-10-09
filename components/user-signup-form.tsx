@@ -8,14 +8,15 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { signIn, signOut, useSession } from "next-auth/react"
 import { redirect } from "next/navigation"
+import { useForm } from "react-hook-form"
 
+const siteUrl = process.env.SITE_URL 
 interface UserAuthFormProps extends React.HTMLAttributes<HTMLDivElement> {}
 
 export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
   const [isCredentialLoading, setIsCredentialLoading] = React.useState<boolean>(false)
   const [isGoogleLoading, setIsGoogleLoading] = React.useState<boolean>(false)
-  const [email, setEmail] = React.useState("");
-  const [password, setPassword] = React.useState("");
+  const { register, handleSubmit } = useForm()
  
   const { data: session } = useSession()
   React.useEffect(() => { // todo: make this not just check constantly
@@ -24,11 +25,13 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
     }
   })
 
-  async function onSubmit(event: React.SyntheticEvent) {
-    event.preventDefault()
+  async function onSubmit(formData: FormData) { //todo: fix this "any"
     setIsCredentialLoading(true)
-
-    console.log(JSON.stringify(event.target))
+  
+    await fetch("https://echo-server.deno.dev", {
+      method: "POST",
+      body: JSON.stringify(formData)
+    });
 
     setTimeout(() => {
       setIsCredentialLoading(false)
@@ -48,11 +51,11 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
 
   return (
     <div className={cn("grid gap-6", className)} {...props}>
-      <form onSubmit={onSubmit}>
+      <form onSubmit={handleSubmit(onSubmit as any)}>
         <div className="grid gap-2">
           <div className="grid gap-1">
             <Label className="sr-only" htmlFor="email">
-              name
+              Name
             </Label>
             <Input
               id="name"
@@ -62,6 +65,7 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
               autoComplete="off"
               autoCorrect="off"
               disabled={isCredentialLoading || isGoogleLoading}
+              {...register('name')}
             />
           </div>
           <div className="grid gap-1">
@@ -76,6 +80,7 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
               autoComplete="email"
               autoCorrect="off"
               disabled={isCredentialLoading || isGoogleLoading}
+              {...register('email')}
             />
           </div>
           <div className="grid gap-1">
@@ -87,6 +92,7 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
               placeholder="Password"
               type="password"
               disabled={isCredentialLoading || isGoogleLoading}
+              {...register('password')}
             />
           </div>
           <Button disabled={isCredentialLoading || isGoogleLoading}>
