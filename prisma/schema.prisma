@@ -8,14 +8,14 @@ datasource db {
 }
 
 model User {
-    id            Int             @id @default(autoincrement())
-    email         String          @unique
-    password      String?
-    name          String?
-    active        Boolean         @default(false)
-    createdAt     DateTime        @default(now())
-    updatedAt     DateTime        @updatedAt
-    ActivateToken ActivateToken[]
+    id             Int             @id @default(autoincrement())
+    email          String          @unique
+    password       String?
+    name           String?
+    active         Boolean         @default(false)
+    createdAt      DateTime        @default(now())
+    updatedAt      DateTime        @updatedAt
+    activateTokens ActivateToken[]
 }
 
 model ActivateToken {
