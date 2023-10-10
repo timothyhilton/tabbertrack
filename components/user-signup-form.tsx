@@ -27,8 +27,8 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
 
   async function onSubmit(formData: FormData) { //todo: fix this "any"
     setIsCredentialLoading(true)
-  
-    await fetch("https://echo-server.deno.dev", {
+
+    await fetch("/api/auth/register", {
       method: "POST",
       body: JSON.stringify(formData)
     });

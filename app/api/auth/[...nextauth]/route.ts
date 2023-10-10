@@ -25,7 +25,7 @@ const authOptions: NextAuthOptions = {
                 password: { label: 'Password', type: 'password'}
             },
             async authorize(credentials) {
-                if (!credentials?.email || !credentials.password) {
+                if(!credentials?.email || !credentials.password) {
                     return null
                 }
 
@@ -33,13 +33,20 @@ const authOptions: NextAuthOptions = {
                     where: {
                         email: credentials.email
                     }
-                });
-                if (!user){ return null }
+                }); 
+                
+                if(!user){ 
+                    return null 
+                }                
 
                 if(!await compare(
                     credentials.password,
                     user.password!
                 )) { return null }
+
+                if(!user.active){
+                    throw new Error('Please activate your account')
+                }
 
                 return {
                     id: user.id + '',
