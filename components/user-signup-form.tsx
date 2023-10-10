@@ -9,8 +9,7 @@ import { Label } from "@/components/ui/label"
 import { signIn, signOut, useSession } from "next-auth/react"
 import { redirect } from "next/navigation"
 import { useForm } from "react-hook-form"
-
-const siteUrl = process.env.SITE_URL 
+ 
 interface UserAuthFormProps extends React.HTMLAttributes<HTMLDivElement> {}
 
 export function UserAuthForm({ className, ...props }: UserAuthFormProps) {

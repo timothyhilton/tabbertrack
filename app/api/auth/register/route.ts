@@ -1,5 +1,6 @@
 import { PrismaClient } from '@prisma/client'
 import { hash } from 'bcrypt'
+import { randomUUID } from 'crypto';
 import { NextResponse } from 'next/server'
 import { Client } from 'postmark';
 
@@ -22,23 +23,29 @@ export async function POST(request: Request) {
         }
     })
 
+    // make verification token
+
+    const token = await prisma.activateToken.create({
+        data: {
+            token: `${randomUUID()}${randomUUID()}`.replace(/-/g, ''),
+            userId: user.id
+        }
+    })
+
     // send verification email to user
 
-    const emailData = {
-        From: "verify@tabbertrack.com",
-        To: user.email,
-        Subject: "Account verification for TabberTrack",
-        HtmlBody: "hello!",
-    };
-
-    try {
-        const result = await postmarkClient.sendEmail(emailData);
-        console.log('Verification email sent successfully');
-    } 
-    catch (error) {
-        console.error('Error sending email:', error);
-        throw error;
-    }
+    postmarkClient.sendEmailWithTemplate({
+        "From": "verify@tabbertrack.com",
+        "To": user.email,
+        "TemplateAlias": "verify",
+        "TemplateModel": {
+          "person": {
+            "name": user.name,
+            "activationToken": token.token
+          },
+          "siteUrl": "http://localhost:3000"
+        }
+    });
 
     return new NextResponse("created", data)
 }
