@@ -34,7 +34,7 @@ export async function GET(request: NextRequest, { params }: paramProps) {
     })
 
     if(!user){
-        throw new Error('Invalid token')
+        return redirect("/login?error=Invalid verification token")
     }
 
     await prisma.user.update({

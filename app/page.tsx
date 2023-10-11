@@ -11,10 +11,6 @@ export default async function Home() {
     <div>
       <LoginButton />
       <LogoutButton />
-      <h2>Server session</h2>
-      <p>{JSON.stringify(session)}</p>
-      <h2>Client session</h2>
-      <User />
       <ModeToggle />
     </div>
   )
