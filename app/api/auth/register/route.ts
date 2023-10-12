@@ -13,7 +13,21 @@ export async function POST(request: Request) {
 
     const data = await request.json()
 
+    if(!data.name){return NextResponse.json({ error: "No name defined" }, { status: 400 });}
+    if(!data.email){return NextResponse.json({ error: "No email defined" }, { status: 400 });}
+    if(!data.password){return NextResponse.json({ error: "No password defined" }, { status: 400 });}
+
     const password = await hash(data.password as string, 12)
+
+    if( // check if account already exists
+        await prisma.user.findFirst({
+            where: {
+                email: data.email as string
+            }
+        })
+    ){
+        return NextResponse.json({ error: "Email already exists" }, { status: 400 });
+    }
     
     const user = await prisma.user.create({
         data: {

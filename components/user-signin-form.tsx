@@ -9,6 +9,8 @@ import { Label } from "@/components/ui/label"
 import { signIn, signOut, useSession } from "next-auth/react"
 import { redirect } from "next/navigation"
 import { Link } from "lucide-react"
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert"
+import { useSearchParams } from 'next/navigation'
 
 interface UserAuthFormProps extends React.HTMLAttributes<HTMLDivElement> {}
 
@@ -17,6 +19,9 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
   const [isGoogleLoading, setIsGoogleLoading] = React.useState<boolean>(false)
   const [email, setEmail] = React.useState("");
   const [password, setPassword] = React.useState("");
+  const searchParams = useSearchParams()
+ 
+  const error = searchParams.get('error')
 
   const { data: session } = useSession()
   React.useEffect(() => { // todo: make this not just check constantly
@@ -55,6 +60,14 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
       <form onSubmit={onSubmit}>
         <div className="grid gap-2">
           <div className="grid gap-1">
+            {error &&
+              <Alert className="bg-red-500">
+                <AlertTitle>Hey!</AlertTitle>
+                <AlertDescription>
+                  {error}
+                </AlertDescription>
+              </Alert>
+            }
             <Label className="sr-only" htmlFor="email">
               Email
             </Label>

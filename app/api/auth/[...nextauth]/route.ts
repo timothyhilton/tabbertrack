@@ -26,7 +26,7 @@ const authOptions: NextAuthOptions = {
             },
             async authorize(credentials) {
                 if(!credentials?.email || !credentials.password) {
-                    return null
+                    throw new Error('Invalid credentials')
                 }
 
                 const user = await prisma.user.findUnique({
@@ -36,13 +36,13 @@ const authOptions: NextAuthOptions = {
                 }); 
                 
                 if(!user){ 
-                    return null 
+                    throw new Error('Invalid credentials')
                 }                
 
                 if(!await compare(
                     credentials.password,
                     user.password!
-                )) { return null }
+                )) { throw new Error('Invalid credentials') }
 
                 if(!user.active){
                     throw new Error('Please activate your account')
@@ -110,7 +110,8 @@ const authOptions: NextAuthOptions = {
         }
     },
     pages: {
-        signIn: '/login'
+        signIn: '/login',
+        error: '/login'
     },
     debug: true
 }

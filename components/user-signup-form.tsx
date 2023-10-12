@@ -9,6 +9,7 @@ import { Label } from "@/components/ui/label"
 import { signIn, signOut, useSession } from "next-auth/react"
 import { redirect } from "next/navigation"
 import { useForm } from "react-hook-form"
+import { Alert, AlertDescription, AlertTitle } from "./ui/alert"
  
 interface UserAuthFormProps extends React.HTMLAttributes<HTMLDivElement> {}
 
@@ -16,6 +17,7 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
   const [isCredentialLoading, setIsCredentialLoading] = React.useState<boolean>(false)
   const [isGoogleLoading, setIsGoogleLoading] = React.useState<boolean>(false)
   const { register, handleSubmit } = useForm()
+  const [error, setError] = React.useState("")
  
   const { data: session } = useSession()
   React.useEffect(() => { // todo: make this not just check constantly
@@ -27,11 +29,15 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
   async function onSubmit(formData: FormData) { //todo: fix this "any"
     setIsCredentialLoading(true)
 
-    await fetch("/api/auth/register", {
+    const res = await fetch("/api/auth/register", {
       method: "POST",
       body: JSON.stringify(formData)
-    });
+    })
 
+    try{
+      setError((await res.json()).error)
+    } catch{}
+    
     setTimeout(() => {
       setIsCredentialLoading(false)
     }, 3000)
@@ -53,6 +59,14 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
       <form onSubmit={handleSubmit(onSubmit as any)}>
         <div className="grid gap-2">
           <div className="grid gap-1">
+            {error &&
+              <Alert className="bg-red-500">
+                <AlertTitle>Hey!</AlertTitle>
+                <AlertDescription>
+                  {error}
+                </AlertDescription>
+              </Alert>
+            }
             <Label className="sr-only" htmlFor="email">
               Name
             </Label>
