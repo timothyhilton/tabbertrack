@@ -8,8 +8,8 @@ export default async function Home() {
   const session = await getServerSession(authOptions)
 
   return (
-    <div>
-      <h1 className="text-8xl font-bold text-center">
+    <div className="lg:px-[15vw]">
+      <h1 className="text-6xl font-bold mt-4 lg:mt-[5rem]">
         TabberTrack
       </h1>
       <h2 className='pl-10'>

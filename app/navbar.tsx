@@ -8,6 +8,8 @@ import { DropdownMenu, DropdownMenuContent, DropdownMenuGroup, DropdownMenuItem,
 import { signOut } from "next-auth/react";
 import { LogoutDropdownMenuItem } from "@/components/auth";
 import { Icons } from "@/components/ui/icons";
+import Logo from "@/components/navbar/logo";
+import Link from "next/link";
 
 export async function NavBar(){
     const session = await getServerSession(authOptions)
@@ -15,10 +17,14 @@ export async function NavBar(){
     return(
         <div>
             {session &&
-                <div className="flex-no-wrap relative flex w-full items-center justify-between py-2 border-b-[1px]">
+                <div className="lg:px-[15vw] flex-no-wrap relative flex w-full items-center justify-between py-2 border-b-[1px]">
                     <div className="pl-3 flex flex-row">
-                        <Icons.tabbertrack className="w-[2.5rem] h-[2.5rem] my-[-0.4rem]" />
-                        <p className="mt-[0.2rem] ml-2 font-semibold">TabberTrack</p>
+                        <Link href="/dashboard" className="flex flex-row">
+                            <Icons.tabbertrack className="w-[1.5rem] h-[1.5rem] my-[0.2rem]" />
+                            <p className="mt-[0.2rem] ml-2 font-semibold">
+                                TabberTrack
+                            </p>
+                        </Link>
                     </div>
                     <div className="pr-2">
                         <DropdownMenu>
