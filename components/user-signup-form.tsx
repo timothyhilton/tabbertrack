@@ -18,6 +18,7 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
   const [isGoogleLoading, setIsGoogleLoading] = React.useState<boolean>(false)
   const { register, handleSubmit } = useForm()
   const [error, setError] = React.useState("")
+  const [errorColour, setErrorColour] = React.useState("")
  
   const { data: session } = useSession()
   React.useEffect(() => { // todo: make this not just check constantly
@@ -36,7 +37,10 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
 
     try{
       setError((await res.json()).error)
-    } catch{}
+    } catch {
+      setErrorColour("bg-green-500")
+      setError("Please check your email to verify your account")
+    }
     
     setTimeout(() => {
       setIsCredentialLoading(false)
@@ -60,7 +64,7 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
         <div className="grid gap-2">
           <div className="grid gap-1">
             {error &&
-              <Alert className="bg-red-500">
+              <Alert className={`bg-red-500 ${errorColour}`}>
                 <AlertTitle>Hey!</AlertTitle>
                 <AlertDescription>
                   {error}
