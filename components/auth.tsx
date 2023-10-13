@@ -7,9 +7,6 @@ import { redirect } from 'next/navigation'
 export const LoginButton = () => {
     return <Button variant="link" className="" onClick={() => signIn()}>Login</Button>
 }
-export const RegisterButton = () => {
-    return <Button variant="ghost" onClick={() => redirect("/register")}>Sign up</Button>
-}
 
 export const LogoutDropdownMenuItem = () => {
     return(

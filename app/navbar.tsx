@@ -6,7 +6,7 @@ import { authOptions } from "./api/auth/[...nextauth]/route";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuGroup, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuShortcut, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import { signOut } from "next-auth/react";
-import { LoginButton, LogoutDropdownMenuItem, RegisterButton } from "@/components/auth";
+import { LoginButton, LogoutDropdownMenuItem } from "@/components/auth";
 import { Icons } from "@/components/ui/icons";
 import Logo from "@/components/navbar/logo";
 import Link from "next/link";
@@ -61,30 +61,35 @@ export async function NavBar(){
 
     return(
         <div>
-            
-                <div className="lg:px-[15vw] flex-no-wrap relative flex w-full items-center justify-between py-2 border-b-[1px]">
-                    <div className="pl-3 flex flex-row">
-                        <Link href="/dashboard" className="flex flex-row">
-                            <Icons.tabbertrack className="w-[1.5rem] h-[1.5rem] my-[0.2rem]" />
-                            <p className="mt-[0.2rem] ml-2 font-semibold">
-                                TabberTrack
-                            </p>
-                        </Link>
-                    </div>
-                    <div className="pr-2 flex flex-row">
-                        <ModeToggle className="mr-3 scale-90"/>
-                        {session &&
-                            <div className="mt-[0.1rem] scale-90">
-                                <UserIcon session={session} />
-                            </div>
-                        }
-                        {!session &&
-                            <div className="">
-                                <LoginButton />
-                            </div>
-                        }
-                    </div>
+            <div className="lg:px-[15vw] flex-no-wrap relative flex w-full items-center justify-between py-2 border-b-[1px]">
+                <div className="pl-3 flex flex-row">
+                    <Link href="/" className="flex flex-row mt-[0.3rem]">
+                        <Icons.tabbertrack className="w-[1.5rem] h-[1.5rem] my-[0.2rem]" />
+                        <p className="mt-[0.2rem] ml-2 font-semibold">
+                            TabberTrack
+                        </p>
+                    </Link>
+                    <div className="ml-5 mr-1 w-[1px] border-l-[1px]"></div>
+                    <Link href="/dashboard">
+                        <Button variant="link">
+                            Home
+                        </Button>
+                    </Link>
                 </div>
+                <div className="pr-2 flex flex-row">
+                    <ModeToggle className="mr-3 scale-90"/>
+                    {session &&
+                        <div className="mt-[0.1rem] scale-90">
+                            <UserIcon session={session} />
+                        </div>
+                    }
+                    {!session &&
+                        <div className="">
+                            <LoginButton />
+                        </div>
+                    }
+                </div>
+            </div>
         </div>
     );
 }
