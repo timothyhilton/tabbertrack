@@ -1,14 +1,10 @@
 import { Button } from "@/components/ui/button";
-import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { Session, getServerSession } from "next-auth";
-import { redirect } from "next/navigation";
 import { authOptions } from "./api/auth/[...nextauth]/route";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuGroup, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuShortcut, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
-import { signOut } from "next-auth/react";
 import { LoginButton, LogoutDropdownMenuItem } from "@/components/auth";
 import { Icons } from "@/components/ui/icons";
-import Logo from "@/components/navbar/logo";
 import Link from "next/link";
 import { ModeToggle } from "@/components/ui/modetoggle";
 
