@@ -1,24 +1,33 @@
 import { PrismaClient } from "@prisma/client"
-import { NextResponse } from "next/server"
+import { getServerSession } from "next-auth";
+import { NextRequest, NextResponse } from "next/server"
+import { authOptions } from "../auth/[...nextauth]/route";
 
 const prisma = new PrismaClient()
 
-export async function POST(request: Request) {
+export async function POST(request: NextRequest ) {
+    const session = await getServerSession(authOptions)
     const data = await request.json()
 
-    if(!data.username){
-        return NextResponse.json({ error: "No username defined" }, { status: 400 });
-    }
+    if(!session){ return NextResponse.json({ error: "Unauthorized" }, { status: 401 }) }
+    if(!data.username){ return NextResponse.json({ error: "No username defined" }, { status: 400 }) }
 
-    const user = await prisma.user.findFirst({
+    const toUser = await prisma.user.findFirst({
         where: {
             username: data.username
         }
     })
-
-    if(!user){
-        return NextResponse.json({ error: `No user exists with username "${data.username}"` }, { status: 400 });
+    if(!toUser){
+        return NextResponse.json({ error: `No user exists with username "${data.username}"` }, { status: 400 })
     }
+    if(toUser.id == parseInt(session.user!.id)){ return NextResponse.json({ error: "You can't friend yourself, silly!" }, { status: 400 }) }
 
-    return NextResponse.json({ success: 'Friend request sent' }, { status: 201})
+    await prisma.friendRequest.create({
+        data: {
+            fromUserId: parseInt(session.user!.id),
+            toUserId: toUser.id
+        }
+    })
+
+    return NextResponse.json({ success: 'Friend request sent successfully' }, { status: 201})
 }
