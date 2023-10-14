@@ -8,9 +8,9 @@ export default function Logo(){
         <div className="pl-3 flex flex-row">
             <button onClick={() => redirect("/dashboard")} className="flex flex-row">
                 <Icons.tabbertrack className="w-[2.5rem] h-[2.5rem] my-[-0.4rem]" />
-                <p className="mt-[0.2rem] ml-1 font-semibold">
+                <div className="mt-[0.2rem] ml-1 font-semibold">
                     TabberTrack
-                </p>
+                </div>
             </button>
         </div>
     )

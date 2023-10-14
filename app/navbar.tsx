@@ -24,12 +24,12 @@ function UserIcon({ session }: { session: (Session | null)}){
             <DropdownMenuContent className="w-56" align="end" forceMount>
                 <DropdownMenuLabel className="font-normal">
                 <div className="flex flex-col space-y-1">
-                    <p className="text-sm font-medium leading-none">
+                    <div className="text-sm font-medium leading-none">
                         {session!.user!.name}
-                    </p>
-                    <p className="text-xs leading-none text-muted-foreground">
+                    </div>
+                    <div className="text-xs leading-none text-muted-foreground">
                     {session!.user!.username}
-                    </p>
+                    </div>
                 </div>
                 </DropdownMenuLabel>
                 <DropdownMenuSeparator />
@@ -62,9 +62,9 @@ export async function NavBar(){
                 <div className="pl-3 flex flex-row">
                     <Link href="/" className="flex flex-row mt-[0.3rem]">
                         <Icons.tabbertrack className="w-[1.5rem] h-[1.5rem] my-[0.2rem]" />
-                        <p className="mt-[0.2rem] ml-2 font-semibold">
+                        <div className="mt-[0.2rem] ml-2 font-semibold">
                             TabberTrack
-                        </p>
+                        </div>
                     </Link>
                     <div className="ml-5 mr-1 w-[1px] border-l-[1px]"></div>
                     <Link href="/dashboard">

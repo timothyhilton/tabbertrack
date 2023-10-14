@@ -21,12 +21,12 @@ export default function AuthenticationPage() {
               <h1 className="text-2xl font-semibold tracking-tight">
                 Sign into your account
               </h1>
-              <p className="text-sm text-muted-foreground">
+              <div className="text-sm text-muted-foreground">
                 Enter your email and password below to continue
-              </p>
+              </div>
             </div>
             <UserAuthForm />
-            <p className="px-8 text-center text-sm text-muted-foreground">
+            <div className="px-8 text-center text-sm text-muted-foreground">
               By clicking continue, you agree to our{" "}
               <Link
                 href="/terms"
@@ -42,7 +42,7 @@ export default function AuthenticationPage() {
                 Privacy Policy
               </Link>
               .
-            </p>
+            </div>
           </div>
         </div>
       </div>
