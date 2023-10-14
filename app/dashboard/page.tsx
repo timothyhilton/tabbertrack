@@ -3,6 +3,8 @@ import { getServerSession } from "next-auth"
 import { redirect } from "next/navigation"
 import { NavBar } from "../navbar"
 import { Button } from "@/components/ui/button"
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog"
+import { AddFriendDialog } from "@/components/friend-dialog"
 
 export default async function Dashboard(){
     const session = await getServerSession(authOptions)
@@ -36,9 +38,14 @@ export default async function Dashboard(){
                     <Button>
                         Add a new transaction
                     </Button>
-                    <Button>
-                        Add a new person you know
-                    </Button>
+                    <Dialog>
+                        <DialogTrigger>
+                            <Button>
+                                Add a new friend
+                            </Button>
+                        </DialogTrigger>
+                        <AddFriendDialog />
+                    </Dialog>
                 </div>
             </div>
         </>
