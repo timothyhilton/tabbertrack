@@ -13,6 +13,7 @@ export async function POST(request: Request) {
 
     const data = await request.json()
 
+    // todo: make this... better?
     if(!data.name){return NextResponse.json({ error: "No name defined" }, { status: 400 });}
     if(!data.email){return NextResponse.json({ error: "No email defined" }, { status: 400 });}
     if(!data.username){return NextResponse.json({ error: "No username defined" }, { status: 400 });}
