@@ -17,10 +17,17 @@ export async function POST(request: NextRequest ) {
             username: data.username
         }
     })
-    if(!toUser){
-        return NextResponse.json({ error: `No user exists with username "${data.username}"` }, { status: 400 })
-    }
+    if(!toUser){ return NextResponse.json({ error: `No user exists with username "${data.username}"` }, { status: 400 }) }
     if(toUser.id == parseInt(session.user!.id)){ return NextResponse.json({ error: "You can't friend yourself, silly!" }, { status: 400 }) }
+
+    const duplicateCheck = await prisma.friendRequest.findFirst({
+        where: {
+            fromUserId: parseInt(session.user!.id),
+            toUserId: toUser.id,
+            status: "pending"
+        }
+    })
+    if(duplicateCheck) { return NextResponse.json({ error: `You have already sent a pending friend request to that person` }, { status: 400 }) }
 
     await prisma.friendRequest.create({
         data: {

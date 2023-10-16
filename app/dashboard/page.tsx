@@ -44,7 +44,9 @@ export default async function Dashboard(){
                                 Add a new friend
                             </Button>
                         </DialogTrigger>
+
                         <AddFriendDialog />
+                        
                     </Dialog>
                 </div>
             </div>

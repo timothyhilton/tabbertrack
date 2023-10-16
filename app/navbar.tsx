@@ -67,7 +67,7 @@ export async function NavBar(){
                         </div>
                     </Link>
                     <div className="ml-5 mr-1 w-[1px] border-l-[1px]"></div>
-                    <Link href="/dashboard">
+                    <Link href="/dashboard" passHref>
                         <Button variant="link">
                             Home
                         </Button>
