@@ -62,15 +62,15 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
     <div className={cn("grid gap-6", className)} {...props}>
       <form onSubmit={handleSubmit(onSubmit as any)}>
         <div className="grid gap-2">
+          {error &&
+            <Alert className={`bg-red-500 ${errorColour}`}>
+              <AlertTitle>Hey!</AlertTitle>
+              <AlertDescription>
+                {error}
+              </AlertDescription>
+            </Alert>
+          }
           <div className="grid gap-1">
-            {error &&
-              <Alert className={`bg-red-500 ${errorColour}`}>
-                <AlertTitle>Hey!</AlertTitle>
-                <AlertDescription>
-                  {error}
-                </AlertDescription>
-              </Alert>
-            }
             <Label className="sr-only" htmlFor="email">
               Name
             </Label>
@@ -83,6 +83,21 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
               autoCorrect="off"
               disabled={isCredentialLoading || isGoogleLoading}
               {...register('name')}
+            />
+          </div>
+          <div className="grid gap-1">
+            <Label className="sr-only" htmlFor="email">
+              Username
+            </Label>
+            <Input
+              id="username"
+              placeholder="username"
+              type="username"
+              autoCapitalize="none"
+              autoComplete="off"
+              autoCorrect="off"
+              disabled={isCredentialLoading || isGoogleLoading}
+              {...register('username')}
             />
           </div>
           <div className="grid gap-1">

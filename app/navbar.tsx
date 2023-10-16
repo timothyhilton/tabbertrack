@@ -1,14 +1,10 @@
 import { Button } from "@/components/ui/button";
-import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { Session, getServerSession } from "next-auth";
-import { redirect } from "next/navigation";
 import { authOptions } from "./api/auth/[...nextauth]/route";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuGroup, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuShortcut, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
-import { signOut } from "next-auth/react";
 import { LoginButton, LogoutDropdownMenuItem } from "@/components/auth";
 import { Icons } from "@/components/ui/icons";
-import Logo from "@/components/navbar/logo";
 import Link from "next/link";
 import { ModeToggle } from "@/components/ui/modetoggle";
 
@@ -28,29 +24,30 @@ function UserIcon({ session }: { session: (Session | null)}){
             <DropdownMenuContent className="w-56" align="end" forceMount>
                 <DropdownMenuLabel className="font-normal">
                 <div className="flex flex-col space-y-1">
-                    <p className="text-sm font-medium leading-none">
+                    <div className="text-sm font-medium leading-none">
                         {session!.user!.name}
-                    </p>
-                    <p className="text-xs leading-none text-muted-foreground">
-                    {session!.user!.email}
-                    </p>
+                    </div>
+                    <div className="text-xs leading-none text-muted-foreground">
+                    {session!.user!.username}
+                    </div>
                 </div>
                 </DropdownMenuLabel>
                 <DropdownMenuSeparator />
                 <DropdownMenuGroup>
-                <DropdownMenuItem>
-                    Profile
-                </DropdownMenuItem>
-                <DropdownMenuItem>
-                    Billing
-                </DropdownMenuItem>
+                <Link href="/friends" className="hover:cursor-wait">
+                    <DropdownMenuItem>
+                        Friends
+                    </DropdownMenuItem>
+                </Link>
                 <DropdownMenuItem>
                     Settings
                 </DropdownMenuItem>
                 <DropdownMenuItem>New Team</DropdownMenuItem>
                 </DropdownMenuGroup>
                 <DropdownMenuSeparator />
+
                 <LogoutDropdownMenuItem />
+
             </DropdownMenuContent>
         </DropdownMenu>
     )
@@ -65,12 +62,12 @@ export async function NavBar(){
                 <div className="pl-3 flex flex-row">
                     <Link href="/" className="flex flex-row mt-[0.3rem]">
                         <Icons.tabbertrack className="w-[1.5rem] h-[1.5rem] my-[0.2rem]" />
-                        <p className="mt-[0.2rem] ml-2 font-semibold">
+                        <div className="mt-[0.2rem] ml-2 font-semibold">
                             TabberTrack
-                        </p>
+                        </div>
                     </Link>
                     <div className="ml-5 mr-1 w-[1px] border-l-[1px]"></div>
-                    <Link href="/dashboard">
+                    <Link href="/dashboard" passHref>
                         <Button variant="link">
                             Home
                         </Button>

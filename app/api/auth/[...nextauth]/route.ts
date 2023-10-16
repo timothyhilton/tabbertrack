@@ -1,5 +1,6 @@
 import { PrismaClient } from '@prisma/client'
 import { compare } from 'bcrypt'
+import { randomUUID } from 'crypto'
 import { NextAuthOptions } from 'next-auth'
 import NextAuth from 'next-auth/next'
 import CredentialsProvider from 'next-auth/providers/credentials'
@@ -51,6 +52,7 @@ const authOptions: NextAuthOptions = {
                 return {
                     id: user.id + '',
                     email: user.email,
+                    username: user.username,
                     name: user.name
                 }
             }
@@ -70,6 +72,22 @@ const authOptions: NextAuthOptions = {
             if(!profile?.email){
                 throw new Error('No profile')
             }
+            
+            // generates a random username for people using google login.
+            // generates a new username if by chance it generates one that already exists
+            // todo: do something less janky here.
+
+            while(true){
+                let username: string = "TTUser" + Math.floor(Math.random() * 10000001)
+
+                if( // break if username is unique
+                    !await prisma.user.findFirst({
+                        where: {
+                            username: username
+                        }
+                    })
+                ) { break }
+            }
 
             await prisma.user.upsert({
                 where: {
@@ -78,6 +96,7 @@ const authOptions: NextAuthOptions = {
                 create: {
                     email: profile.email,
                     name: profile.name,
+                    username: "TTUser" + Math.floor(Math.random() * 100001)
                 },
                 update: {
                     name: profile.name
@@ -88,22 +107,35 @@ const authOptions: NextAuthOptions = {
         },
         
         session: ({ session, token }) => {
-            console.log('Session Callback', { session, token })
             return {
                 ...session,
                 user: {
                     ...session.user,
-                    id: token.id
+                    id: token.id,
+                    username: token.username
                 }
             }
         },
 
-        jwt: ({ token, user }) => {
-            console.log('JWT Callback', { token, user })
+        jwt: async ({ token, user, account }) => {
+            if(user && account && account.provider == "google"){ // if googleprovider, get the real ID and Username from the database before returning jwt
+                const realUser = await prisma.user.findUnique({
+                    where: {
+                        email: user.email!
+                    }
+                })
+                
+                if(realUser){
+                    user.id = realUser.id.toString()
+                    user.username = realUser.username
+                }
+            }
+
             if(user){
                 return {
                     ...token,
-                    id: user.id
+                    id: user.id,
+                    username: user.username
                 }
             }
             return token

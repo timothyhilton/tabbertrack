@@ -8,14 +8,19 @@ datasource db {
 }
 
 model User {
-    id             Int             @id @default(autoincrement())
-    email          String          @unique
-    password       String?
-    name           String?
-    active         Boolean         @default(false)
-    createdAt      DateTime        @default(now())
-    updatedAt      DateTime        @updatedAt
-    activateTokens ActivateToken[]
+    id                     Int             @id @default(autoincrement())
+    email                  String          @unique
+    username               String          @unique
+    password               String?
+    name                   String?
+    active                 Boolean         @default(false)
+    createdAt              DateTime        @default(now())
+    updatedAt              DateTime        @updatedAt
+    activateTokens         ActivateToken[]
+    sentFriendRequests     FriendRequest[] @relation("from")
+    receivedFriendRequests FriendRequest[] @relation("to")
+    friend                 User[]          @relation("friends")
+    friendOf               User[]          @relation("friends") // can mostly be ignored
 }
 
 model ActivateToken {
@@ -26,4 +31,16 @@ model ActivateToken {
     updatedAt   DateTime  @updatedAt
     user        User      @relation(fields: [userId], references: [id])
     userId      Int
+}
+
+model FriendRequest {
+    id        Int      @id @default(autoincrement())
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+    status    String   @default("pending") // "pending" | "accepted" | "declined"
+
+    fromUserId Int
+    toUserId   Int
+    from       User @relation(fields: [fromUserId], references: [id], name: "from")
+    to         User @relation(fields: [toUserId], references: [id], name: "to")
 }
