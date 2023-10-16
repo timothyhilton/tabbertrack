@@ -19,8 +19,8 @@ model User {
     activateTokens         ActivateToken[]
     sentFriendRequests     FriendRequest[] @relation("from")
     receivedFriendRequests FriendRequest[] @relation("to")
-    friends                User[]          @relation("friends")
-    friendOf               User[]          @relation("friends")
+    friend                 User[]          @relation("friends")
+    friendOf               User[]          @relation("friends") // can mostly be ignored
 }
 
 model ActivateToken {

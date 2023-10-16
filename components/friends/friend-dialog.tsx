@@ -1,10 +1,10 @@
 'use client'
 import { useState } from "react";
-import { Button } from "./ui/button";
-import { DialogContent, DialogDescription, DialogHeader, DialogTitle } from "./ui/dialog";
+import { Button } from "../ui/button";
+import { DialogContent, DialogDescription, DialogHeader, DialogTitle } from "../ui/dialog";
 import { useForm } from "react-hook-form";
-import { Input } from "./ui/input";
-import { Alert, AlertDescription, AlertTitle } from "./ui/alert";
+import { Input } from "../ui/input";
+import { Alert, AlertDescription, AlertTitle } from "../ui/alert";
 
 export function AddFriendDialog(){
     const [friendType, setFriendType] = useState("")

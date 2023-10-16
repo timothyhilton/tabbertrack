@@ -39,10 +39,8 @@ export async function POST(request: NextRequest) {
                 status: "accepted"
             }
         })
-
-        return NextResponse.json({ success: "Request accepted successfully" }, { status: 201 })
     }
-    if(data.verdict == "decline"){
+    else if(data.verdict == "decline"){
         await prisma.friendRequest.update({
             where: {
                 id: friendRequest.id,
@@ -53,8 +51,37 @@ export async function POST(request: NextRequest) {
             }
         })
 
-        return NextResponse.json({ success: "Request declined successfully" }, { status: 201 })
+        return NextResponse.json({ success: "Request declined successfully" }, { status: 200 })
     }
+    else { return NextResponse.json({ error: "Invalid verdict" }, { status: 400 }) }
 
-    return NextResponse.json({ success: "Invalid verdict" }, { status: 400 })
+    const acceptingUser = await prisma.user.findFirst({
+        where: {
+            id: parseInt(session.user!.id)
+        }
+    })
+
+    const acceptingUserUpdate = await prisma.user.update({
+        where: {
+            id: parseInt(session.user!.id)
+        },
+        data: {
+            friends: {
+                connect: requestingUser
+            }
+        }
+    })
+
+    const requestingUserUpdate = await prisma.user.update({
+        where: {
+            id: requestingUser.id
+        },
+        data: {
+            friends: {
+                connect: acceptingUser!
+            }
+        }
+    })
+
+    return NextResponse.json({ success: "Request accepted successfully" }, { status: 201 })
 }
