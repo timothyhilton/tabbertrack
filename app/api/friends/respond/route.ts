@@ -66,7 +66,7 @@ export async function POST(request: NextRequest) {
             id: parseInt(session.user!.id)
         },
         data: {
-            friends: {
+            friend: {
                 connect: requestingUser
             }
         }
@@ -77,7 +77,7 @@ export async function POST(request: NextRequest) {
             id: requestingUser.id
         },
         data: {
-            friends: {
+            friend: {
                 connect: acceptingUser!
             }
         }

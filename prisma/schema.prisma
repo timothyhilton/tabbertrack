@@ -54,5 +54,5 @@ model ExternalFriend {
     userId    Int
 
     name               String
-    outstandingBalance Float
+    outstandingBalance Float  @default(0.0)
 }
