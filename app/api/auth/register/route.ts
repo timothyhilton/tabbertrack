@@ -3,9 +3,9 @@ import { hash } from 'bcrypt'
 import { randomUUID } from 'crypto';
 import { NextResponse } from 'next/server'
 import { Client } from 'postmark';
+import prisma from '@/db';
 
 const postmarkClient = new Client(process.env.POSTMARK_SERVER_TOKEN!)
-const prisma = new PrismaClient()
 
 export async function POST(request: Request) {
 

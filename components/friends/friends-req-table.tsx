@@ -6,8 +6,7 @@ import { FriendRequest, PrismaClient } from "@prisma/client";
 import { Table, TableBody, TableCaption, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
 import FriendReqResponseButtons from "@/components/friends/friend-req-response";
-
-const prisma = new PrismaClient()
+import prisma from '@/db';
 
 export default async function FriendsReqTable(){
     const session = await getServerSession(authOptions)

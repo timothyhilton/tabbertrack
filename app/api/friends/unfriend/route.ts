@@ -2,8 +2,7 @@ import { getServerSession } from "next-auth"
 import { NextRequest, NextResponse } from "next/server"
 import { authOptions } from "../../auth/[...nextauth]/route"
 import { PrismaClient } from "@prisma/client"
-
-const prisma = new PrismaClient() 
+import prisma from '@/db';
 
 export async function POST(request: NextRequest) {
     const session = await getServerSession(authOptions)
@@ -14,7 +13,7 @@ export async function POST(request: NextRequest) {
 
     const friends = await prisma.user.findMany({ // find every user who is a friend of the current user
         where: {
-            friends: {
+            friend: {
                 some: {
                     username: data.username
                 }
@@ -29,7 +28,7 @@ export async function POST(request: NextRequest) {
                 username: session.user!.username 
             },
             data: {
-                friends: {
+                friend: {
                     disconnect: { 
                         username: data.username 
                     }
@@ -41,7 +40,7 @@ export async function POST(request: NextRequest) {
                 username: data.username
             },
             data: {
-                friends: {
+                friend: {
                     disconnect: { 
                         username: session.user!.username
                     }

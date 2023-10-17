@@ -7,6 +7,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar"
 import { Button } from "../ui/button"
 import UnfriendButton from "./unfriend-button"
 import prisma from '@/db'
+import UnfriendButtonExternal from "./unfriend-button-external"
 
 export default async function FriendsList(){
     const session = await getServerSession(authOptions)
@@ -24,34 +25,64 @@ export default async function FriendsList(){
         }
     })
 
+    const unRegisteredFriends = await prisma.externalFriend.findMany({
+        where: {
+            userId: parseInt(session.user!.id)
+        }
+    })
+
     console.log(friends)
 
     return(
         <div className="flex flex-row space-x-4 justify-center">
-            <div className="flex flex-row space-x-4">
-                
-            </div>
-            <div className="flex flex-row space-x-4">
-                {friends.map(async (friend) => {
-                    return(
-                        <Card className="w-fit pt-6">
-                            <CardContent className="flex flex-row align-middle justify-center">
-                                <Avatar>
-                                    <AvatarImage src="https://github.com/shadsdfdcn.png" />
-                                    <AvatarFallback>
-                                        {friend.name!.slice(0, 2).toUpperCase()}
-                                    </AvatarFallback>
-                                </Avatar>
-                                <div className="ml-2">
-                                    <CardTitle>{friend.name}</CardTitle>
-                                    <CardDescription>{friend.username}</CardDescription>
-                                </div>
+            <div className="">
+                <h1 className="text-xl font-semibold flex justify-center mb-3">On TabberTrack:</h1>
+                <div className="flex flex-row space-x-4 justify-center">
+                    {friends.map(async (friend) => {
+                        return(
+                            <Card className="w-fit pt-6">
+                                <CardContent className="flex flex-row align-middle justify-center">
+                                    <Avatar>
+                                        <AvatarImage src="https://github.com/shadsdfdcn.png" />
+                                        <AvatarFallback>
+                                            {friend.name!.slice(0, 2).toUpperCase()}
+                                        </AvatarFallback>
+                                    </Avatar>
+                                    <div className="ml-2">
+                                        <CardTitle>{friend.name}</CardTitle>
+                                        <CardDescription>{friend.username}</CardDescription>
+                                    </div>
 
-                                <UnfriendButton username={friend.username}/>
-                            </CardContent>
-                        </Card>
-                    )
-                })}
+                                    <UnfriendButton username={friend.username}/>
+                                </CardContent>
+                            </Card>
+                        )
+                    })}
+                </div>
+            </div>
+            <div className="h-[10rem] border-l-[1px] w-1 ml-10 mr-9"></div>
+            <div className="">
+                <div className="text-xl font-semibold flex justify-center mb-3">Not on TabberTrack:</div>
+                <div className="flex flex-row space-x-4 justify-center">
+                    {unRegisteredFriends.map(async (friend) => {
+                        return(
+                            <Card className="w-fit pt-6">
+                                <CardContent className="flex flex-row align-middle justify-center">
+                                    <Avatar>
+                                        <AvatarImage src="https://github.com/shadsdfdcn.png" />
+                                        <AvatarFallback>
+                                            {friend.name!.slice(0, 2).toUpperCase()}
+                                        </AvatarFallback>
+                                    </Avatar>
+                                    <div className="mt-2 ml-2">
+                                        <CardTitle>{friend.name}</CardTitle>
+                                    </div>
+                                    <UnfriendButtonExternal name={friend.name}/>
+                                </CardContent>
+                            </Card>
+                        )
+                    })}
+                </div>
             </div>
         </div>
     )
