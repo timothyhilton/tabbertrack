@@ -39,7 +39,7 @@ function FriendFormWrapper({ friendType }: { friendType: string}){
         )
     } else if (friendType == "unregistered") {
         return(
-            <>unregistered</>
+            <UnRegisteredFriendForm />
         )
     } else {
         return(<></>)
@@ -81,6 +81,46 @@ function RegisteredFriendForm(){
             
             <Button className="w-full">
                 Send request
+            </Button>
+        </form>
+    )
+}
+
+function UnRegisteredFriendForm(){
+    const { register, handleSubmit, watch, formState: { errors } } = useForm()
+    const [error, setError] = useState("")
+    const [errorBoxColour, setErrorBoxColour] = useState("")
+
+    async function onSubmit(data: any){
+        const res = await fetch("/api/friends/addexternal", {
+            method: "POST",
+            body: JSON.stringify(data)
+        })
+
+        const resJSON = await res.json()
+
+        if(resJSON.error){
+            setError(resJSON.error)
+        } else {
+            setErrorBoxColour("bg-green-500")
+            setError(resJSON.success)
+        }
+    }
+
+    return (
+        <form className="pt-5 space-y-2" onSubmit={handleSubmit(onSubmit)}>
+            {error &&
+              <Alert className={`bg-red-500 ${errorBoxColour}`}>
+                <AlertTitle>Hey!</AlertTitle>
+                <AlertDescription>
+                  {error}
+                </AlertDescription>
+              </Alert>
+            }
+            <Input placeholder="name" {...register("name")} />
+            
+            <Button className="w-full">
+                Add unregistered friend
             </Button>
         </form>
     )

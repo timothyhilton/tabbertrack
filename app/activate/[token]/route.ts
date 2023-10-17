@@ -1,8 +1,6 @@
-import { PrismaClient } from "@prisma/client";
 import { redirect } from "next/navigation";
 import { NextRequest } from "next/server";
-
-const prisma = new PrismaClient()
+import prisma from '@/db'
 
 interface paramProps{
     params: { token: string }

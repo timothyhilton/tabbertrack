@@ -1,7 +1,6 @@
 import { PrismaClient } from "@prisma/client"
 import { hash } from "bcrypt"
-
-const prisma = new PrismaClient()
+import prisma from '@/db'
 
 async function main() {
     const password = await hash('asdf', 12)

@@ -41,8 +41,6 @@ export default async function FriendsReqTable(){
         else return "error"
     }
 
-    prisma.$disconnect
-
     return(
         <div className="flex flex-col lg:flex-row justify-center space-y-10 lg:space-y-0 lg:space-x-10 mt-10">
             <div className="border rounded-md w-full h-fit">
