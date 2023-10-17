@@ -37,7 +37,7 @@ export default async function FriendsList(){
         <div className="flex flex-row space-x-4 justify-center">
             <div className="">
                 <h1 className="text-xl font-semibold flex justify-center mb-3">On TabberTrack:</h1>
-                <div className="flex flex-row space-x-4 justify-center">
+                <div className="flex flex-row space-x-4 justify-center flex-wrap space-y-4">
                     {friends.map(async (friend) => {
                         return(
                             <Card className="w-fit pt-6">
@@ -63,7 +63,7 @@ export default async function FriendsList(){
             <div className="h-[10rem] border-l-[1px] w-1 ml-10 mr-9"></div>
             <div className="">
                 <div className="text-xl font-semibold flex justify-center mb-3">Not on TabberTrack:</div>
-                <div className="flex flex-row space-x-4 justify-center">
+                <div className="flex flex-row space-x-4 justify-center flex-wrap">
                     {unRegisteredFriends.map(async (friend) => {
                         return(
                             <Card className="w-fit pt-6">
