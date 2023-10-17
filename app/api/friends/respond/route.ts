@@ -1,9 +1,7 @@
 import { getServerSession } from "next-auth";
 import { NextRequest, NextResponse } from "next/server";
 import { authOptions } from "../../auth/[...nextauth]/route";
-import { PrismaClient } from "@prisma/client";
-
-const prisma = new PrismaClient()
+import prisma from '@/db'
 
 export async function POST(request: NextRequest) {
     const session = await getServerSession(authOptions)
@@ -66,7 +64,7 @@ export async function POST(request: NextRequest) {
             id: parseInt(session.user!.id)
         },
         data: {
-            friends: {
+            friend: {
                 connect: requestingUser
             }
         }
@@ -77,7 +75,7 @@ export async function POST(request: NextRequest) {
             id: requestingUser.id
         },
         data: {
-            friends: {
+            friend: {
                 connect: acceptingUser!
             }
         }

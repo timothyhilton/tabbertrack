@@ -6,8 +6,7 @@ import { FriendRequest, PrismaClient } from "@prisma/client";
 import { Table, TableBody, TableCaption, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
 import FriendReqResponseButtons from "@/components/friends/friend-req-response";
-
-const prisma = new PrismaClient()
+import prisma from '@/db';
 
 export default async function FriendsReqTable(){
     const session = await getServerSession(authOptions)
@@ -40,8 +39,6 @@ export default async function FriendsReqTable(){
         else if(nameOrUsername == "name"){ return(user.name) }
         else return "error"
     }
-
-    prisma.$disconnect
 
     return(
         <div className="flex flex-col lg:flex-row justify-center space-y-10 lg:space-y-0 lg:space-x-10 mt-10">
