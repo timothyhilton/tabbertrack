@@ -5,12 +5,33 @@ import { NavBar } from "../navbar"
 import { Button } from "@/components/ui/button"
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog"
 import { AddFriendDialog } from "@/components/friends/friend-dialog"
+import { AddTransactionDialog } from "@/components/transactions/transactions-dialog"
+import prisma from "@/db"
 
 export default async function Dashboard(){
     const session = await getServerSession(authOptions)
     if(!session){
         redirect('/api/auth/signin')
     }
+
+    const externalFriends = await prisma.externalFriend.findMany({
+        where: {
+            userId: parseInt(session.user!.id)
+        }
+    })
+
+    const friends = await prisma.user.findMany({
+        where: {
+            friend: {
+                some: {
+                    id: parseInt(session.user!.id)
+                }
+            }
+        }
+    })
+
+    const friendNames = friends.map(friend => { return {username: friend.username, name: friend.name} })
+    const externalFriendNames = externalFriends.map(friend => friend.name)
 
     return (
         <>
@@ -35,9 +56,16 @@ export default async function Dashboard(){
                     </div>
                 </div>
                 <div className="flex justify-center space-x-10">
-                    <Button>
-                        Add a new transaction
-                    </Button>
+                    <Dialog>
+                        <DialogTrigger>
+                            <Button>
+                                Add a new transaction
+                            </Button>
+                        </DialogTrigger>
+
+                        <AddTransactionDialog friendNames={friendNames} externalFriendNames={externalFriendNames} />
+
+                    </Dialog>
                     <Dialog>
                         <DialogTrigger>
                             <Button>

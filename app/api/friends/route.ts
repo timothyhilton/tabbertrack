@@ -37,3 +37,30 @@ export async function POST(request: NextRequest ) {
 
     return NextResponse.json({ success: 'Friend request sent successfully' }, { status: 201})
 }
+
+export async function GET(request: NextRequest){
+    const session = await getServerSession(authOptions)
+    if(!session){ return NextResponse.json({ error: "Unauthorized" }, { status: 401 }) }
+
+    const externalFriends = await prisma.externalFriend.findMany({
+        where: {
+            userId: parseInt(session.user!.id)
+        }
+    })
+
+    const friends = await prisma.user.findMany({
+        where: {
+            friend: {
+                some: {
+                    id: parseInt(session.user!.id)
+                }
+            }
+        }
+    })
+    
+    return(NextResponse.json({ 
+        externalFriends: externalFriends.map(friend => friend.name), 
+        friends: friends.map(friend => friend.username)
+    }, 
+    { status: 200 }))
+}
