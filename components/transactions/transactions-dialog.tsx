@@ -72,10 +72,10 @@ function RegisteredFriendTransactionForm(
     const [error, setError] = useState("")
     const [errorBoxColour, setErrorBoxColour] = useState("")
 
-    const [data, setData] = useState({ username: '', amount: 0 })
+    const [data, setData] = useState({ username: '', amount: 0.0 })
 
     async function onSubmit(){
-        const res = await fetch("/api/friends", {
+        const res = await fetch("/api/transactions", {
             method: "POST",
             body: JSON.stringify(data)
         })
@@ -89,6 +89,7 @@ function RegisteredFriendTransactionForm(
             setError(resJSON.success)
             router.refresh()
         }
+
     }
 
     function handleUserChange(x: any){
@@ -96,7 +97,7 @@ function RegisteredFriendTransactionForm(
     }
 
     function handleDollarChange(x: any){
-        setData({...data, amount: parseFloat(x)})
+        setData({...data, amount: parseFloat(x.target.value)})
     }
 
     return (
@@ -109,7 +110,7 @@ function RegisteredFriendTransactionForm(
                     </AlertDescription>
                 </Alert>
             }
-                <Input className="mt-5" placeholder="$---" type="number" />
+                <Input className="mt-5" placeholder="$---" type="number" onChange={handleDollarChange} />
                 <Select onValueChange={handleUserChange}>
                     <SelectTrigger>
                         <SelectValue placeholder="Select a friend" />
