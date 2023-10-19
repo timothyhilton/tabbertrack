@@ -4,6 +4,9 @@ import { NavBar } from "../navbar";
 import TransactionsReqTable from "@/components/transactions/transactions-req-table";
 import prisma from "@/db";
 import { redirect } from "next/navigation";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import SentTransactionsTable from "@/components/transactions/sent-transactions-table";
+import ReceivedTransactionsTable from "@/components/transactions/received-transactions-table";
 
 export default async function Transactions(){
     const session = await getServerSession(authOptions)
@@ -11,17 +14,15 @@ export default async function Transactions(){
         redirect('/api/auth/signin')
     }
     
-    const sentPendingFriendRequests = await prisma.transaction.findMany({
+    const sentFriendRequests = await prisma.transaction.findMany({
         where: {
-            fromUserId: parseInt(session.user!.id),
-            status: "pending"
+            fromUserId: parseInt(session.user!.id)
         }
     })
 
     const receivedFriendRequests = await prisma.transaction.findMany({
         where: {
-            toUserId: parseInt(session.user!.id),
-            status: "pending"
+            toUserId: parseInt(session.user!.id)
         }
     })
 
@@ -34,7 +35,7 @@ export default async function Transactions(){
         return { name: user!.name! , username: user!.username }
     }
 
-    const sentPendingFriendRequestsProps = await Promise.all(sentPendingFriendRequests
+    const sentFriendRequestsProps = await Promise.all(sentFriendRequests
         .map(async request => {
             return {
                 ...(await getNamesFromId(request.toUserId)),
@@ -63,7 +64,20 @@ export default async function Transactions(){
                 <h1 className="mb-10 text-3xl flex font-semibold justify-center">
                     Transactions
                 </h1>
-                <TransactionsReqTable sentTransactionRequests={sentPendingFriendRequestsProps} receivedTransactionRequests={receivedFriendRequestsProps} />
+                <div className="flex justify-center">
+                    <Tabs defaultValue="received" className="md:w-[70%]">
+                        <TabsList className="grid grid-cols-2">
+                            <TabsTrigger value="received">Received Transaction Requests</TabsTrigger>
+                            <TabsTrigger value="sent">Sent Transaction Requests</TabsTrigger>
+                        </TabsList>
+                        <TabsContent value="received">
+                            <ReceivedTransactionsTable receivedTransactionRequests={receivedFriendRequestsProps} />
+                        </TabsContent>
+                        <TabsContent value="sent">
+                            <SentTransactionsTable sentTransactionRequests={sentFriendRequestsProps} />
+                        </TabsContent>
+                    </Tabs>
+                </div>
                 <h1 className="mb-4 mt-10 text-3xl flex font-semibold justify-center">
                     Friend requests
                 </h1>
