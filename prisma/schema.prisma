@@ -70,5 +70,6 @@ model Transaction {
     from       User @relation(fields: [fromUserId], references: [id], name: "from")
     to         User @relation(fields: [toUserId], references: [id], name: "to")
 
-    amount Float
+    amount        Float
+    doesSenderOwe Boolean // todo: do this differently?
 }

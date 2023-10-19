@@ -10,6 +10,7 @@ export async function POST(request: NextRequest) {
     if(!session){ return NextResponse.json({ error: "Unauthorized" }, { status: 401 }) }
     if(!data.username){ return NextResponse.json({ error: "No username defined" }, { status: 400 }) }
     if(!data.amount){ return NextResponse.json({ error: "No amount defined" }, { status: 400 }) }
+    if(!!data.doesSenderOwe){ return NextResponse.json({ error: "No owe information defined" }, { status: 400 }) }
 
     function hasTwoOrLessDecimalPlaces(num: number) {
         let decimalPart = (num.toString().split('.')[1] || []).length;
@@ -41,7 +42,8 @@ export async function POST(request: NextRequest) {
         data: {
             fromUserId: parseInt(session.user!.id),
             toUserId: toUser.id,
-            amount: data.amount
+            amount: data.amount,
+            doesSenderOwe: data.doesSenderOwe
         }
     })
 

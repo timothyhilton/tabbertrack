@@ -61,7 +61,7 @@ function FriendTypeFormWrapper({ friendType, friendNames, externalFriendNames }:
     }
 }
 
-function RegisteredFriendTransactionForm(
+function RegisteredFriendTransactionForm( // i am aware this is handled horribly...
     { friendNames }: 
     { friendNames: {
         name: string,
@@ -71,8 +71,13 @@ function RegisteredFriendTransactionForm(
     const router = useRouter()
     const [error, setError] = useState("")
     const [errorBoxColour, setErrorBoxColour] = useState("")
+    const [submitClassName, setSubmitClassName] = useState("hidden")
 
-    const [data, setData] = useState({ username: '', amount: 0.0 })
+    const [data, setData] = useState({ 
+        username: '', 
+        amount: 0.0,
+        doesSenderOwe: false
+    })
 
     async function onSubmit(){
         const res = await fetch("/api/transactions", {
@@ -100,8 +105,18 @@ function RegisteredFriendTransactionForm(
         setData({...data, amount: parseFloat(x.target.value)})
     }
 
+    function handleOweChange(doesSenderOwe: boolean){
+        setData({...data, doesSenderOwe: doesSenderOwe})
+        if(doesSenderOwe){
+            setSubmitClassName("visible")
+        }
+        else {
+            setSubmitClassName("visible bg-green-600 hover:bg-green-700 text-slate-50")
+        }
+    }
+
     return (
-        <div className="w-full space-y-2">
+        <form className="w-full">
             {error &&
                 <Alert className={`bg-red-500 ${errorBoxColour}`}>
                     <AlertTitle>Hey!</AlertTitle>
@@ -110,7 +125,7 @@ function RegisteredFriendTransactionForm(
                     </AlertDescription>
                 </Alert>
             }
-                <Input className="mt-5" placeholder="$---" type="number" onChange={handleDollarChange} />
+                <Input className="mt-5 mb-2" placeholder="amount" type="number" onChange={handleDollarChange} />
                 <Select onValueChange={handleUserChange}>
                     <SelectTrigger>
                         <SelectValue placeholder="Select a friend" />
@@ -118,16 +133,31 @@ function RegisteredFriendTransactionForm(
                     <SelectContent>
                         {friendNames.map((name) => {
                             return (
-                                <SelectItem className="flex flex-row flex-nowrap" value={name.username}>
-                                    <div> {name.name} </div> 
-                                    <div className="text-muted-foreground">{name.username}</div>
+                                <SelectItem value={name.username}>
+                                    <div className="flex flex-row flex-nowrap">
+                                        <div> {name.name} </div> 
+                                        <div className="text-muted-foreground">&nbsp;/ {name.username}</div>
+                                    </div>
                                 </SelectItem>
                             )
                         })}
                     </SelectContent>
                 </Select>
-            <Button type="submit" className="w-full" onClick={onSubmit}>Submit</Button>
-        </div>
+                {data.username != "" &&
+                    <div>
+                        <p className="text-muted-foreground text-sm mt-2">Who owes who?</p>
+                        <div className="grid grid-flow-col justify-stretch space-x-6">
+                            <Button type="button" variant="outline" onClick={() => handleOweChange(true)}>
+                                I owe ${data.amount} to {data.username}
+                            </Button>
+                            <Button type="button" variant="outline" onClick={() => handleOweChange(false)}>
+                                {data.username} owes me ${data.amount}
+                            </Button>
+                        </div>
+                    </div>
+                }
+            <Button variant="destructive" type="button" onClick={onSubmit} className={`w-full mt-6 ${submitClassName}`}>Submit</Button>
+        </form>
     )
 }
 
