@@ -72,4 +72,5 @@ model Transaction {
 
     amount        Float
     doesSenderOwe Boolean // todo: do this differently?
+    description   String
 }

@@ -1,7 +1,6 @@
 import { getServerSession } from "next-auth";
 import { authOptions } from "../api/auth/[...nextauth]/route";
 import { NavBar } from "../navbar";
-import TransactionsReqTable from "@/components/transactions/transactions-req-table";
 import prisma from "@/db";
 import { redirect } from "next/navigation";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -53,7 +52,8 @@ export default async function Transactions(){
                 ...(await getNamesFromId(request.fromUserId)),
                 amount: request.amount,
                 status: request.status,
-                createdAt: request.createdAt
+                createdAt: request.createdAt,
+                id: request.id
             }
         }))
 

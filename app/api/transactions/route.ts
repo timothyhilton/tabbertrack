@@ -10,7 +10,7 @@ export async function POST(request: NextRequest) {
     if(!session){ return NextResponse.json({ error: "Unauthorized" }, { status: 401 }) }
     if(!data.username){ return NextResponse.json({ error: "No username defined" }, { status: 400 }) }
     if(!data.amount){ return NextResponse.json({ error: "No amount defined" }, { status: 400 }) }
-    if(!!data.doesSenderOwe){ return NextResponse.json({ error: "No owe information defined" }, { status: 400 }) }
+    if(!(data.doesSenderOwe === true || data.doesSenderOwe === false)){ return NextResponse.json({ error: "No owe information defined" }, { status: 400 }) }
 
     function hasTwoOrLessDecimalPlaces(num: number) {
         let decimalPart = (num.toString().split('.')[1] || []).length;
@@ -18,6 +18,7 @@ export async function POST(request: NextRequest) {
     }
 
     if(!hasTwoOrLessDecimalPlaces(data.amount)){ return NextResponse.json({ error: "Amount can't have more than 2 decimal places" }, { status: 400 }) }
+    if(data.amount < 0){ return NextResponse.json({ error: "Amount can't be negative" }, { status: 400 }) }
     
     const toUser = await prisma.user.findFirst({
         where: {

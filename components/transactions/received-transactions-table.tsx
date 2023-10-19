@@ -1,3 +1,7 @@
+'use client'
+
+import { useRouter } from "next/navigation"
+import { Button } from "../ui/button"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "../ui/table"
 
 interface SentTransactionsTableProps{
@@ -6,11 +10,27 @@ interface SentTransactionsTableProps{
         username: string,
         amount: number,
         status: string,
-        createdAt: Date
+        createdAt: Date,
+        id: number
     }[]
 }
 
 export default function ReceivedTransactionsTable({ receivedTransactionRequests }: SentTransactionsTableProps){
+    const router = useRouter();
+
+    async function respondToTransactionRequest(verdict: string, id: number) {
+        const res = await fetch("/api/transactions/respond", {
+            method: "POST",
+            body: JSON.stringify({
+                id: id,
+                verdict: verdict
+            })
+        })
+
+        console.log(await res.json())
+        router.refresh()
+    }
+
     return(
         <div className="border rounded-md w-full h-fit">
                 <Table>
@@ -41,11 +61,17 @@ export default function ReceivedTransactionsTable({ receivedTransactionRequests 
                                     </TableCell>
 
                                     <TableCell className="flex flex-row justify-end space-x-4">
-                                        {/*(transaction.status == "pending") &&
-                                            //<FriendReqResponseButtons fromUsername={await getNameFromReq(friendReq.fromUserId, "username")}/>
-                                        */}                        
+                                        {(transaction.status == "pending") &&
+                                            <div className="flex flex-row justify-end space-x-4">
+                                                <Button onClick={() => respondToTransactionRequest("accept", transaction.id)} className="bg-green-600 hover:bg-green-700 text-slate-50">
+                                                    Accept
+                                                </Button>
+                                                <Button onClick={() => respondToTransactionRequest("decline", transaction.id)} variant="destructive">
+                                                    Decline
+                                                </Button>
+                                            </div>
+                                        }
                                     </TableCell>
-
                                 </TableRow>
                             )
                         })}
