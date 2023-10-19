@@ -74,7 +74,7 @@ export async function NavBar(){
                     </Link>
                 </div>
                 <div className="pr-2 flex flex-row">
-                    <Link className="mr-1" href="/dashboard" passHref>
+                    <Link className="mr-1" href="/transactions" passHref>
                         <Button variant="link">
                             Transactions
                         </Button>
