@@ -74,6 +74,12 @@ export async function NavBar(){
                     </Link>
                 </div>
                 <div className="pr-2 flex flex-row">
+                    <Link className="mr-1" href="/dashboard" passHref>
+                        <Button variant="link">
+                            Transactions
+                        </Button>
+                    </Link>
+                    <div className=" mr-[0.55rem] w-[1px] border-l-[1px]"></div>
                     <ModeToggle className="mr-3 scale-90"/>
                     {session &&
                         <div className="mt-[0.1rem] scale-90">
