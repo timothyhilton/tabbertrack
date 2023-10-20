@@ -3,6 +3,8 @@
 import { useRouter } from "next/navigation"
 import { Button } from "../ui/button"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "../ui/table"
+import { Switch } from "../ui/switch"
+import { Label } from "../ui/label"
 
 interface SentTransactionsTableProps{
     receivedTransactionRequests: {
@@ -32,7 +34,12 @@ export default function ReceivedTransactionsTable({ receivedTransactionRequests 
     }
 
     return(
-        <div className="border rounded-md w-full h-fit">
+        <div>
+            <div className="flex items-center space-x-2">
+                <Switch id="airplane-mode" />
+                <Label htmlFor="airplane-mode">Airplane Mode</Label>
+            </div>
+            <div className="border rounded-md w-full h-fit">
                 <Table>
                     <TableHeader>
                         <TableRow>
@@ -78,5 +85,6 @@ export default function ReceivedTransactionsTable({ receivedTransactionRequests 
                     </TableBody>
                 </Table>
             </div>
+        </div>
     )
 }
