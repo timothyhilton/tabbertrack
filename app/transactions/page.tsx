@@ -54,7 +54,8 @@ export default async function Transactions(){
                 amount: request.amount,
                 status: request.status,
                 createdAt: request.createdAt,
-                id: request.id
+                id: request.id,
+                description: request.description
             }
         }))
 
