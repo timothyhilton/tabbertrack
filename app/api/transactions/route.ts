@@ -7,10 +7,12 @@ export async function POST(request: NextRequest) {
     const session = await getServerSession(authOptions)
     const data = await request.json()
 
-    if(!session){ return NextResponse.json({ error: "Unauthorized" }, { status: 401 }) }
+    if(!session){ return NextResponse.json({ error: "Unauthorized" }, { status: 401 }) } // todo: find a better way to do this garbage!!
     if(!data.username){ return NextResponse.json({ error: "No username defined" }, { status: 400 }) }
     if(!data.amount){ return NextResponse.json({ error: "No amount defined" }, { status: 400 }) }
     if(!(data.doesSenderOwe === true || data.doesSenderOwe === false)){ return NextResponse.json({ error: "No owe information defined" }, { status: 400 }) }
+
+    if(data.description.length > 30){ return NextResponse.json({ error: "Description can't be over 30 characters" }, { status: 400 }) }
 
     function hasTwoOrLessDecimalPlaces(num: number) {
         let decimalPart = (num.toString().split('.')[1] || []).length;
@@ -44,7 +46,8 @@ export async function POST(request: NextRequest) {
             fromUserId: parseInt(session.user!.id),
             toUserId: toUser.id,
             amount: data.amount,
-            doesSenderOwe: data.doesSenderOwe
+            doesSenderOwe: data.doesSenderOwe,
+            description: data.description
         }
     })
 

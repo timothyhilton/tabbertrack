@@ -76,7 +76,8 @@ function RegisteredFriendTransactionForm( // i am aware this is handled horribly
     const [data, setData] = useState({ 
         username: '', 
         amount: 0.0,
-        doesSenderOwe: false
+        doesSenderOwe: false,
+        description: ''
     })
 
     async function onSubmit(){
@@ -115,6 +116,10 @@ function RegisteredFriendTransactionForm( // i am aware this is handled horribly
         }
     }
 
+    function handleDescriptionChange(x: any){
+        setData({...data, description: x.target.value});
+    }
+
     return (
         <form className="w-full">
             {error &&
@@ -126,6 +131,7 @@ function RegisteredFriendTransactionForm( // i am aware this is handled horribly
                 </Alert>
             }
                 <Input className="mt-5 mb-2" placeholder="amount" type="number" onChange={handleDollarChange} />
+                <Input className="mt-2 mb-2" placeholder="description (optional)" maxLength={30} onChange={handleDescriptionChange} />
                 <Select onValueChange={handleUserChange}>
                     <SelectTrigger>
                         <SelectValue placeholder="Select a friend" />
@@ -156,6 +162,7 @@ function RegisteredFriendTransactionForm( // i am aware this is handled horribly
                         </div>
                     </div>
                 }
+            
             <Button variant="destructive" type="button" onClick={onSubmit} className={`w-full mt-6 ${submitClassName}`}>Submit</Button>
         </form>
     )

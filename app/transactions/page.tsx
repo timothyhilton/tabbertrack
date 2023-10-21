@@ -40,7 +40,8 @@ export default async function Transactions(){
                 ...(await getNamesFromId(request.toUserId)),
                 amount: request.amount,
                 status: request.status,
-                createdAt: request.createdAt
+                createdAt: request.createdAt,
+                description: request.description
             }
         }))
 
@@ -65,7 +66,7 @@ export default async function Transactions(){
                     Transactions
                 </h1>
                 <div className="flex justify-center">
-                    <Tabs defaultValue="received" className="md:w-[70%]">
+                    <Tabs defaultValue="received" className="lg:w-[89%]">
                         <TabsList className="grid grid-cols-2">
                             <TabsTrigger value="received">Received Transaction Requests</TabsTrigger>
                             <TabsTrigger value="sent">Sent Transaction Requests</TabsTrigger>
