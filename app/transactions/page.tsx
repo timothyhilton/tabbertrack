@@ -41,7 +41,8 @@ export default async function Transactions(){
                 amount: request.amount,
                 status: request.status,
                 createdAt: request.createdAt,
-                description: request.description
+                description: request.description,
+                doesSenderOwe: request.doesSenderOwe
             }
         }))
 
@@ -55,7 +56,8 @@ export default async function Transactions(){
                 status: request.status,
                 createdAt: request.createdAt,
                 id: request.id,
-                description: request.description
+                description: request.description,
+                doesSenderOwe: request.doesSenderOwe
             }
         }))
 
@@ -80,9 +82,6 @@ export default async function Transactions(){
                         </TabsContent>
                     </Tabs>
                 </div>
-                <h1 className="mb-4 mt-10 text-3xl flex font-semibold justify-center">
-                    Friend requests
-                </h1>
             </div>
         </>
     )

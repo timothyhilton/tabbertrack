@@ -16,7 +16,8 @@ interface SentTransactionsTableProps{
         amount: number,
         status: string,
         createdAt: Date,
-        description: string
+        description: string,
+        doesSenderOwe: boolean
     }[]
 }
 
@@ -73,7 +74,16 @@ export default function SentTransactionsTable({ sentTransactionRequests }: SentT
                                         )}
                                     </TableCell>
                                     <TableCell className="text-xs md:text-sm">
-                                        {"$" + transaction.amount.toFixed(2)}
+                                        <div className={
+                                            !transaction.doesSenderOwe ? (
+                                                "text-green-600"
+                                            ) : (
+                                                "text-red-600"
+                                            )
+                                        }> 
+                                            {!transaction.doesSenderOwe ? ("+") : ("-")} 
+                                            {"$" + transaction.amount.toFixed(2)} 
+                                        </div>
                                     </TableCell>
                                     <TableCell className="text-right text-xs md:text-sm">
                                         {transaction.status}
