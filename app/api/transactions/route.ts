@@ -10,7 +10,7 @@ export async function POST(request: NextRequest) {
     if(!session){ return NextResponse.json({ error: "Unauthorized" }, { status: 401 }) } // todo: find a better way to do this garbage!!
     if(!data.username){ return NextResponse.json({ error: "No username defined" }, { status: 400 }) }
     if(!data.amount){ return NextResponse.json({ error: "No amount defined" }, { status: 400 }) }
-    if(!(data.doesSenderOwe === true || data.doesSenderOwe === false)){ return NextResponse.json({ error: "No owe information defined" }, { status: 400 }) }
+    if(!(data.userWhoOwes == "sender" || data.userWhoOwes == "receiver")){ return NextResponse.json({ error: "Invalid owe information defined" }, { status: 400 }) }
 
     if(data.description.length > 30){ return NextResponse.json({ error: "Description can't be over 30 characters" }, { status: 400 }) }
 
@@ -40,14 +40,16 @@ export async function POST(request: NextRequest) {
         }
     })
     if(!friendCheck.find(user => user.username == data.username)) { return NextResponse.json({ error: `You aren't friends with that user` }, { status: 400 }) }
-
+    
     await prisma.transaction.create({
         data: {
             fromUserId: parseInt(session.user!.id),
             toUserId: toUser.id,
             amount: data.amount,
-            doesSenderOwe: data.doesSenderOwe,
-            description: data.description
+            userWhoIsOwedId: (data.userWhoOwes == "sender") ? toUser.id : parseInt(session.user!.id),
+            userWhoOwesId: (data.userWhoOwes == "receiver") ? toUser.id : parseInt(session.user!.id),
+            description: data.description,
+            doesSenderOwe: (data.userWhoOwes == "sender") ? true : false
         }
     })
 

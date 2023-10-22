@@ -39,7 +39,7 @@ function UserIcon({ session }: { session: (Session | null)}){
                             Friends
                         </DropdownMenuItem>
                     </Link>
-                    <Link href="/friends" className="hover:cursor-wait">
+                    <Link href="/transactions" className="hover:cursor-wait">
                         <DropdownMenuItem>
                             Transactions
                         </DropdownMenuItem>

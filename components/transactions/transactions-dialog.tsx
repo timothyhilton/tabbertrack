@@ -76,7 +76,7 @@ function RegisteredFriendTransactionForm( // i am aware this is handled horribly
     const [data, setData] = useState({ 
         username: '', 
         amount: 0.0,
-        doesSenderOwe: false,
+        userWhoOwes: '',
         description: ''
     })
 
@@ -107,12 +107,13 @@ function RegisteredFriendTransactionForm( // i am aware this is handled horribly
     }
 
     function handleOweChange(doesSenderOwe: boolean){
-        setData({...data, doesSenderOwe: doesSenderOwe})
         if(doesSenderOwe){
             setSubmitClassName("visible")
+            setData({...data, userWhoOwes: "sender"})
         }
         else {
             setSubmitClassName("visible bg-green-600 hover:bg-green-700 text-slate-50")
+            setData({...data, userWhoOwes: "receiver"})
         }
     }
 

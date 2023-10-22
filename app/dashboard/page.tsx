@@ -14,6 +14,8 @@ export default async function Dashboard(){
         redirect('/api/auth/signin')
     }
 
+    // begin finding stuff for "add a new transaction" and "add a new friend" buttons
+
     const externalFriends = await prisma.externalFriend.findMany({
         where: {
             userId: parseInt(session.user!.id)
@@ -33,6 +35,12 @@ export default async function Dashboard(){
     const friendNames = friends.map(friend => { return {username: friend.username, name: friend.name!} })
     const externalFriendNames = externalFriends.map(friend => friend.name)
 
+    // end
+
+    const friendIds = friends.map(friend => friend.id)
+
+    console.log("friendIds", friendIds)
+
     return (
         <>
             <NavBar />
@@ -43,7 +51,7 @@ export default async function Dashboard(){
                             You collectively owe everyone
                         </h2>
                         <h1 className="text-8xl flex justify-center">
-                            $15.30 {/*placeholder*/}
+                            $0.00 {/*placeholder*/}
                         </h1>
                     </div>
                     <div>
@@ -51,7 +59,7 @@ export default async function Dashboard(){
                             Everyone collectively owes you
                         </h2>
                         <h1 className="text-8xl flex justify-center">
-                            $13.10 {/*placeholder*/}
+                            $0.00 {/*placeholder*/}
                         </h1>
                     </div>
                 </div>

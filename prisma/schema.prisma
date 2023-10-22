@@ -24,6 +24,30 @@ model User {
     ExternalFriend         ExternalFriend[]
     sentTransactions       Transaction[]    @relation("from")
     recievedTransactions   Transaction[]    @relation("to")
+    tWhereUserIsOwed Transaction[] @relation("userWhoIsOwed")
+    tWhereUserOwes Transaction[] @relation("userWhoOwes")
+}
+
+model Transaction {
+    id        Int      @id @default(autoincrement())
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+    status    String   @default("pending") // "pending" | "accepted" | "declined"
+
+    fromUserId Int
+    toUserId   Int
+    from       User @relation(fields: [fromUserId], references: [id], name: "from")
+    to         User @relation(fields: [toUserId], references: [id], name: "to")
+
+    userWhoOwesId Int
+    userWhoOwes User @relation(fields: [userWhoOwesId], references: [id], name: "userWhoOwes")
+
+    userWhoIsOwedId Int
+    userWhoIsOwed User @relation(fields: [userWhoIsOwedId], references: [id], name: "userWhoIsOwed")
+
+    amount        Float
+    doesSenderOwe Boolean
+    description   String
 }
 
 model ActivateToken {
@@ -59,18 +83,4 @@ model ExternalFriend {
     outstandingBalance Float  @default(0.0)
 }
 
-model Transaction {
-    id        Int      @id @default(autoincrement())
-    createdAt DateTime @default(now())
-    updatedAt DateTime @updatedAt
-    status    String   @default("pending") // "pending" | "accepted" | "declined"
 
-    fromUserId Int
-    toUserId   Int
-    from       User @relation(fields: [fromUserId], references: [id], name: "from")
-    to         User @relation(fields: [toUserId], references: [id], name: "to")
-
-    amount        Float
-    doesSenderOwe Boolean // todo: do this differently?
-    description   String
-}
