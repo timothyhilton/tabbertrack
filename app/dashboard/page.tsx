@@ -37,9 +37,27 @@ export default async function Dashboard(){
 
     // end
 
-    const friendIds = friends.map(friend => friend.id)
+    const transactionsWhereMoneyOwedToUser = await prisma.transaction.findMany({
+        where: {
+            userWhoIsOwedId: parseInt(session.user!.id),
+            status: "accepted"
+        }
+    })
 
-    console.log("friendIds", friendIds)
+    var moneyOwedToUser: number = 0
+    transactionsWhereMoneyOwedToUser.forEach(transaction => moneyOwedToUser += transaction.amount)
+
+
+    
+    const transactionsWhereUserOwesMoney = await prisma.transaction.findMany({
+        where: {
+            userWhoOwesId: parseInt(session.user!.id),
+            status: "accepted"
+        }
+    })
+
+    var moneyUserOwes: number = 0
+    transactionsWhereUserOwesMoney.forEach(transaction => moneyUserOwes += transaction.amount)
 
     return (
         <>
@@ -51,7 +69,7 @@ export default async function Dashboard(){
                             You collectively owe everyone
                         </h2>
                         <h1 className="text-8xl flex justify-center">
-                            $0.00 {/*placeholder*/}
+                            {`$${moneyUserOwes.toFixed(2)}`}
                         </h1>
                     </div>
                     <div>
@@ -59,7 +77,7 @@ export default async function Dashboard(){
                             Everyone collectively owes you
                         </h2>
                         <h1 className="text-8xl flex justify-center">
-                            $0.00 {/*placeholder*/}
+                            {`$${moneyOwedToUser.toFixed(2)}`}
                         </h1>
                     </div>
                 </div>
