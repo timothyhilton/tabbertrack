@@ -34,15 +34,16 @@ function UserIcon({ session }: { session: (Session | null)}){
                 </DropdownMenuLabel>
                 <DropdownMenuSeparator />
                 <DropdownMenuGroup>
-                <Link href="/friends" className="hover:cursor-wait">
-                    <DropdownMenuItem>
-                        Friends
-                    </DropdownMenuItem>
-                </Link>
-                <DropdownMenuItem>
-                    Settings
-                </DropdownMenuItem>
-                <DropdownMenuItem>New Team</DropdownMenuItem>
+                    <Link href="/friends" className="hover:cursor-wait">
+                        <DropdownMenuItem>
+                            Friends
+                        </DropdownMenuItem>
+                    </Link>
+                    <Link href="/transactions" className="hover:cursor-wait">
+                        <DropdownMenuItem>
+                            Transactions
+                        </DropdownMenuItem>
+                    </Link>
                 </DropdownMenuGroup>
                 <DropdownMenuSeparator />
 
