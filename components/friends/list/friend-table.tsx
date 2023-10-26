@@ -17,7 +17,7 @@ export default function FriendTable({ friends }: FriendTableProps){
                     <TableHeader>
                         <TableRow>
                             <TableHead className="text-xs md:text-sm">User</TableHead>
-                            <TableHead className="text-xs md:text-sm">Link</TableHead>
+                            <TableHead className="text-xs md:text-sm"></TableHead>
                             <TableHead className="text-xs md:text-sm"></TableHead> {/* no idea why, but without this empty one the styling gets all messed up */}
                             <TableHead className="text-right text-xs md:text-sm">Unfriend</TableHead>
                         </TableRow>
@@ -27,10 +27,11 @@ export default function FriendTable({ friends }: FriendTableProps){
                             return (
                                 <TableRow>
                                     <TableCell className="flex flex-col md:flex-row text-xs md:text-sm">
-                                        <UserLink name={friend.name} username={friend.username} />
+                                        <UserLink name={friend.name} username={friend.username} link={true} />
                                     </TableCell>
 
-                                    <TableCell></TableCell> {/* see comment on line 52 */}
+                                    <TableCell></TableCell> {/* see comment on line 21 */}
+
                                     <TableCell></TableCell>
 
                                     <TableCell className="flex flex-row justify-end space-x-4">

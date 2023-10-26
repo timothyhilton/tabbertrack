@@ -7,6 +7,7 @@ import { getServerSession } from "next-auth";
 import { authOptions } from "../api/auth/[...nextauth]/route";
 import prisma from "@/db";
 import FriendTable from "@/components/friends/list/friend-table";
+import ExternalFriendTable from "@/components/friends/list/external-friend-table";
 
 export default async function Friends(){
     const session = await getServerSession(authOptions)
@@ -29,11 +30,21 @@ export default async function Friends(){
         })
     })
 
+    const externalFriends = (await prisma.externalFriend.findMany({
+        where: {
+            userId: parseInt(session.user!.id)
+        }
+    })).map(friend => { 
+        return({
+            name: friend.name
+        })
+    })
+
     return(
         <>
             <NavBar />
             
-            <div className="lg:px-[15vw] mt-[5rem]">
+            <div className="lg:px-[15vw] md:px-[5vw] mt-[5rem]">
                 <div className="absolute">
                     <Link href="/friends/requests">
                         <Button>
@@ -45,7 +56,7 @@ export default async function Friends(){
                     Friends
                 </h1>
                 <div className="flex justify-center">
-                    <Tabs defaultValue="internal" className="lg:w-[89%]">
+                    <Tabs defaultValue="internal" className="lg:w-[60%] md:w-[70%] w-full">
                         <TabsList className="grid grid-cols-2">
                             <TabsTrigger value="internal">Friends on TabberTrack</TabsTrigger>
                             <TabsTrigger value="external">External Friends</TabsTrigger>
@@ -54,7 +65,7 @@ export default async function Friends(){
                             <FriendTable friends={friends}/>
                         </TabsContent>
                         <TabsContent value="external">
-                            external
+                            <ExternalFriendTable friends={externalFriends} />
                         </TabsContent>
                     </Tabs>
                 </div>
