@@ -8,6 +8,7 @@ import { authOptions } from "../api/auth/[...nextauth]/route";
 import { redirect } from "next/navigation";
 import prisma from "@/db";
 import UnFriendButton from "@/components/friends/unfriend-button";
+import SentFriendReqTable from "@/components/friends/sent-friendreq-table";
 
 export default async function Friends(){
     const session = await getServerSession(authOptions)
@@ -31,6 +32,21 @@ export default async function Friends(){
         }
     }))
 
+    const sentFriendRequests = await Promise.all((await prisma.friendRequest.findMany({
+        where: {
+            fromUserId: parseInt(session.user!.id)
+        }
+    })).map(async friendReq => {
+        let toUser = await prisma.user.findFirst({where:{id:friendReq.toUserId}})
+
+        return {
+            name: toUser!.name!,
+            username: toUser!.username,
+            status: friendReq.status,
+            createdAt: friendReq.createdAt
+        }
+    }))
+
     return(
         <>
             <NavBar />
@@ -48,7 +64,7 @@ export default async function Friends(){
                             <ReceivedFriendReqTable receivedFriendRequests={receivedFriendRequests} />
                         </TabsContent>
                         <TabsContent value="sent">
-                            <>sdjfhsjkdf</>
+                            <SentFriendReqTable sentFriendRequests={sentFriendRequests} />
                         </TabsContent>
                     </Tabs>
                 </div>
