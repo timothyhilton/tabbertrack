@@ -4,10 +4,10 @@ import { redirect } from "next/navigation"
 import { NavBar } from "../navbar"
 import { Button } from "@/components/ui/button"
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog"
-import { AddFriendDialog } from "@/components/friends/friend-dialog"
 import { AddTransactionDialog } from "@/components/transactions/transactions-dialog"
 import prisma from "@/db"
 import OverallOwe from "@/components/dashboard/overall-owe"
+import { AddFriendDialog } from "@/components/friends/friend-dialog"
 
 export default async function Dashboard(){
     const session = await getServerSession(authOptions)

@@ -8,6 +8,7 @@ import { Label } from "../ui/label"
 import { Popover, PopoverContent, PopoverTrigger } from "../ui/popover"
 import { useEffect, useState } from "react"
 import TimeAgoWrapper from "../time-ago"
+import UserLink from "../ui/userlink"
 
 interface SentTransactionsTableProps{
     receivedTransactionRequests: {
@@ -34,11 +35,11 @@ export default function ReceivedTransactionsTable({ receivedTransactionRequests 
         let tempTransactions = receivedTransactionRequests;
         
         if(hidden.declined){
-            tempTransactions = tempTransactions.filter(transaction => transaction.status != "declined")
+            tempTransactions = tempTransactions.filter(transaction => transaction.status != "declined" && transaction.status != "sent - declined")
         }
 
         if(hidden.accepted){
-            tempTransactions = tempTransactions.filter(transaction => transaction.status != "accepted")
+            tempTransactions = tempTransactions.filter(transaction => transaction.status != "accepted" && transaction.status != "sent - accepted")
         }
 
         setTransactions(tempTransactions)
@@ -80,8 +81,7 @@ export default function ReceivedTransactionsTable({ receivedTransactionRequests 
                                     </TableCell>
 
                                     <TableCell className="flex flex-col md:flex-row text-xs md:text-sm">
-                                        <p>{transaction.name}</p>
-                                        <p className="text-muted-foreground whitespace-nowrap">&nbsp;/ {transaction.username}</p>
+                                        <UserLink name={transaction.name} username={transaction.username} link={true} />
                                     </TableCell>
 
                                     <TableCell className="text-xs md:text-sm">
