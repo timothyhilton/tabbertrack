@@ -140,7 +140,7 @@ function RegisteredFriendTransactionForm( // i am aware this is handled horribly
                     <SelectContent>
                         {friendNames.map((name) => {
                             return (
-                                <SelectItem value={name.username}>
+                                <SelectItem value={name.username} key={name.username}>
                                     <div className="flex flex-row flex-nowrap">
                                         <div> {name.name} </div> 
                                         <div className="text-muted-foreground">&nbsp;/ {name.username}</div>

@@ -36,7 +36,7 @@ export default function SentFriendReqTable({ sentFriendRequests }: SentFriendReq
         }
 
         setRequests(tempRequests)
-    }, [hidden]);
+    }, [hidden, sentFriendRequests]);
 
     return(
         <div>
@@ -53,7 +53,7 @@ export default function SentFriendReqTable({ sentFriendRequests }: SentFriendReq
                     <TableBody>
                         {requests.map(friend => {
                             return (
-                                <TableRow>
+                                <TableRow key={friend.username}>
                                     <TableCell className="font-medium text-xs md:text-sm">
                                         <TimeAgoWrapper date={friend.createdAt} /> ago
                                     </TableCell>

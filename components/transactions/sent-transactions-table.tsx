@@ -40,7 +40,7 @@ export default function SentTransactionsTable({ sentTransactionRequests }: SentT
         }
 
         setTransactions(tempTransactions)
-    }, [hidden]);
+    }, [hidden, sentTransactionRequests]);
 
     return(
         <div>
@@ -58,7 +58,7 @@ export default function SentTransactionsTable({ sentTransactionRequests }: SentT
                     <TableBody>
                         {transactions.map(transaction => {
                             return (
-                                <TableRow>
+                                <TableRow key={transaction.username}>
                                     <TableCell className="font-medium text-xs md:text-sm">
                                         <TimeAgoWrapper date={transaction.createdAt} /> ago
                                     </TableCell>

@@ -25,7 +25,7 @@ export default function FriendTable({ friends }: FriendTableProps){
                     <TableBody>
                         {friends.map(friend => {
                             return (
-                                <TableRow>
+                                <TableRow key={friend.username}>
                                     <TableCell className="flex flex-col md:flex-row text-xs md:text-sm">
                                         <UserLink name={friend.name} username={friend.username} link={true} />
                                     </TableCell>

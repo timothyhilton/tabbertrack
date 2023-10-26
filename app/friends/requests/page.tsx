@@ -1,4 +1,3 @@
-import FriendsList from "@/components/friends/friends-list";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import ReceivedFriendReqTable from "@/components/friends/requests/received-friendreq-table";
 import { getServerSession } from "next-auth";

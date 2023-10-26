@@ -43,7 +43,7 @@ export default function ReceivedTransactionsTable({ receivedTransactionRequests 
         }
 
         setTransactions(tempTransactions)
-    }, [hidden]);
+    }, [hidden, receivedTransactionRequests]);
 
     async function respondToTransactionRequest(verdict: string, id: number) {
         const res = await fetch("/api/transactions/respond", {
@@ -74,7 +74,7 @@ export default function ReceivedTransactionsTable({ receivedTransactionRequests 
                     <TableBody>
                         {transactions.map(transaction => {
                             return (
-                                <TableRow>
+                                <TableRow key={transaction.id}>
                                     
                                     <TableCell className="font-medium text-xs md:text-sm">
                                         <TimeAgoWrapper date={transaction.createdAt} /> ago
