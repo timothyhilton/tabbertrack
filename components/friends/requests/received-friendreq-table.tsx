@@ -1,13 +1,13 @@
 'use client'
 
 import { useRouter } from "next/navigation"
-import { Button } from "../ui/button"
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "../ui/table"
-import { Switch } from "../ui/switch"
-import { Label } from "../ui/label"
-import { Popover, PopoverContent, PopoverTrigger } from "../ui/popover"
+import { Button } from "../../ui/button"
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "../../ui/table"
+import { Switch } from "../../ui/switch"
+import { Label } from "../../ui/label"
+import { Popover, PopoverContent, PopoverTrigger } from "../../ui/popover"
 import { useEffect, useState } from "react"
-import TimeAgoWrapper from "../time-ago"
+import TimeAgoWrapper from "../../time-ago"
 import FriendReqResponseButtons from "./friend-req-response-buttons"
 
 interface ReceivedFriendReqTableProps{

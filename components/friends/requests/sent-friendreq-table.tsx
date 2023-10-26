@@ -1,12 +1,12 @@
 "use client"
 
 import { useEffect, useState } from "react"
-import TimeAgoWrapper from "../time-ago"
-import { Button } from "../ui/button"
-import { Label } from "../ui/label"
-import { Popover, PopoverContent, PopoverTrigger } from "../ui/popover"
-import { Switch } from "../ui/switch"
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "../ui/table"
+import TimeAgoWrapper from "../../time-ago"
+import { Button } from "../../ui/button"
+import { Label } from "../../ui/label"
+import { Popover, PopoverContent, PopoverTrigger } from "../../ui/popover"
+import { Switch } from "../../ui/switch"
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "../../ui/table"
 
 interface SentFriendRequestTableProps{
     sentFriendRequests: {

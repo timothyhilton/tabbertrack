@@ -5,9 +5,9 @@ import { redirect } from "next/navigation"
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "../ui/card"
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar"
 import { Button } from "../ui/button"
-import UnfriendButton from "./unfriend-button"
+import UnfriendButton from "./list/unfriend-button"
 import prisma from '@/db'
-import UnfriendButtonExternal from "./unfriend-button-external"
+import UnfriendButtonExternal from "./list/unfriend-button-external"
 
 export default async function FriendsList(){
     const session = await getServerSession(authOptions)
