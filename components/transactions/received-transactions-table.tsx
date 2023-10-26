@@ -30,7 +30,7 @@ export default function ReceivedTransactionsTable({ receivedTransactionRequests 
         accepted: false
     })
 
-    useEffect(() => {
+    useEffect(() => { // filter out declined/accepted transactions to match the 'configure' menu
         let tempTransactions = receivedTransactionRequests;
         
         if(hidden.declined){
@@ -64,7 +64,7 @@ export default function ReceivedTransactionsTable({ receivedTransactionRequests 
                     <TableHeader>
                         <TableRow>
                             <TableHead className="text-xs md:text-sm">Sent</TableHead>
-                            <TableHead className="text-xs md:text-sm">To</TableHead>
+                            <TableHead className="text-xs md:text-sm">From</TableHead>
                             <TableHead className="text-xs md:text-sm">Description</TableHead>
                             <TableHead className="text-xs md:text-sm">Amount</TableHead>
                             <TableHead className="text-right text-xs md:text-sm">Status</TableHead>
@@ -79,7 +79,7 @@ export default function ReceivedTransactionsTable({ receivedTransactionRequests 
                                         <TimeAgoWrapper date={transaction.createdAt} /> ago
                                     </TableCell>
 
-                                    <TableCell className="flex flex-col md:flex-row text-xs md:text-sm"> {/* todo: make this styling work when req accepted */}
+                                    <TableCell className="flex flex-col md:flex-row text-xs md:text-sm">
                                         <p>{transaction.name}</p>
                                         <p className="text-muted-foreground whitespace-nowrap">&nbsp;/ {transaction.username}</p>
                                     </TableCell>

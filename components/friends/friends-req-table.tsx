@@ -5,7 +5,7 @@ import { authOptions } from "../../app/api/auth/[...nextauth]/route";
 import { FriendRequest, PrismaClient } from "@prisma/client";
 import { Table, TableBody, TableCaption, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
-import FriendReqResponseButtons from "@/components/friends/friend-req-response";
+import FriendReqResponseButtons from "@/components/friends/friend-req-response-buttons";
 import prisma from '@/db';
 
 export default async function FriendsReqTable(){

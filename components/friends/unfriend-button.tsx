@@ -3,7 +3,7 @@
 import { useRouter } from "next/navigation";
 import { Button } from "../ui/button"
 
-export default function unFriendButton({ username }: { username: string}){
+export default function UnFriendButton({ username }: { username: string}){
     const router = useRouter();
     
     async function unFriend(){

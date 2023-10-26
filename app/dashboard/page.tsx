@@ -36,6 +36,8 @@ export default async function Dashboard(){
     const friendNames = friends.map(friend => { return {username: friend.username, name: friend.name!} })
     const externalFriendNames = externalFriends.map(friend => friend.name)
 
+    // end
+
     return (
         <>
             <NavBar />

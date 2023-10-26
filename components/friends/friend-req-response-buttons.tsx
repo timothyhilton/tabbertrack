@@ -8,6 +8,8 @@ export default function FriendReqResponseButtons({ fromUsername }: { fromUsernam
 
     async function respondToFriendReq(verdict: string) {
 
+        console.log(fromUsername)
+
         const res = await fetch("/api/friends/respond", {
             method: "POST",
             body: JSON.stringify({

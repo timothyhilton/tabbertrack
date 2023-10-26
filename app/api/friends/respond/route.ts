@@ -9,7 +9,7 @@ export async function POST(request: NextRequest) {
 
     if(!session){ return NextResponse.json({ error: "Unauthorized" }, { status: 401 }) } // todo: am i supposed to do this differently?
     if(!data.username){ return NextResponse.json({ error: "No username defined" }, { status: 400 }) }
-    if(!data.verdict){ return NextResponse.json({ error: "No verdict defined" }, { status: 400 }) }
+    if(!data.verdict){ return NextResponse.json({ error: "No verdict defined" }, { status: 400 }) } // "accept" | "decline"
 
     const requestingUser = await prisma.user.findFirst({
         where: {
