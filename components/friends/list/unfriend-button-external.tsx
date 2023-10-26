@@ -1,16 +1,16 @@
 'use client'
 
 import { useRouter } from "next/navigation";
-import { Button } from "../ui/button"
+import { Button } from "../../ui/button"
 
-export default function unFriendButton({ username }: { username: string}){
+export default function unFriendButtonExternal({ name }: { name: string}){
     const router = useRouter();
     
     async function unFriend(){
-        const res = await fetch("/api/friends/unfriend", {
+        const res = await fetch("/api/friends/removeexternal", {
             method: "POST",
             body: JSON.stringify({
-                username: username
+                name: name
             })
         })
 

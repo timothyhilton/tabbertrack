@@ -8,6 +8,7 @@ import { Label } from "../ui/label"
 import { Popover, PopoverContent, PopoverTrigger } from "../ui/popover"
 import { useEffect, useState } from "react"
 import TimeAgoWrapper from "../time-ago"
+import UserLink from "../ui/userlink"
 
 interface SentTransactionsTableProps{
     receivedTransactionRequests: {
@@ -30,15 +31,15 @@ export default function ReceivedTransactionsTable({ receivedTransactionRequests 
         accepted: false
     })
 
-    useEffect(() => {
+    useEffect(() => { // filter out declined/accepted transactions to match the 'configure' menu
         let tempTransactions = receivedTransactionRequests;
         
         if(hidden.declined){
-            tempTransactions = tempTransactions.filter(transaction => transaction.status != "declined")
+            tempTransactions = tempTransactions.filter(transaction => transaction.status != "declined" && transaction.status != "sent - declined")
         }
 
         if(hidden.accepted){
-            tempTransactions = tempTransactions.filter(transaction => transaction.status != "accepted")
+            tempTransactions = tempTransactions.filter(transaction => transaction.status != "accepted" && transaction.status != "sent - accepted")
         }
 
         setTransactions(tempTransactions)
@@ -64,7 +65,7 @@ export default function ReceivedTransactionsTable({ receivedTransactionRequests 
                     <TableHeader>
                         <TableRow>
                             <TableHead className="text-xs md:text-sm">Sent</TableHead>
-                            <TableHead className="text-xs md:text-sm">To</TableHead>
+                            <TableHead className="text-xs md:text-sm">From</TableHead>
                             <TableHead className="text-xs md:text-sm">Description</TableHead>
                             <TableHead className="text-xs md:text-sm">Amount</TableHead>
                             <TableHead className="text-right text-xs md:text-sm">Status</TableHead>
@@ -79,9 +80,8 @@ export default function ReceivedTransactionsTable({ receivedTransactionRequests 
                                         <TimeAgoWrapper date={transaction.createdAt} /> ago
                                     </TableCell>
 
-                                    <TableCell className="flex flex-col md:flex-row text-xs md:text-sm"> {/* todo: make this styling work when req accepted */}
-                                        <p>{transaction.name}</p>
-                                        <p className="text-muted-foreground whitespace-nowrap">&nbsp;/ {transaction.username}</p>
+                                    <TableCell className="flex flex-col md:flex-row text-xs md:text-sm">
+                                        <UserLink name={transaction.name} username={transaction.username} link={true} />
                                     </TableCell>
 
                                     <TableCell className="text-xs md:text-sm">

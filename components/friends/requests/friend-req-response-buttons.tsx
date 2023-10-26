@@ -1,12 +1,14 @@
 'use client'
 
 import { useRouter } from 'next/navigation';
-import { Button } from "../ui/button";
+import { Button } from "../../ui/button";
 
 export default function FriendReqResponseButtons({ fromUsername }: { fromUsername: string | null }){
     const router = useRouter();
 
     async function respondToFriendReq(verdict: string) {
+
+        console.log(fromUsername)
 
         const res = await fetch("/api/friends/respond", {
             method: "POST",
