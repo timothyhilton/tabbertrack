@@ -34,7 +34,7 @@ export default async function Transactions(){
         return { name: user!.name! , username: user!.username }
     }
 
-    const sentFriendRequestsProps = await Promise.all(sentFriendRequests
+    const sentTransactionProps = await Promise.all(sentFriendRequests
         .map(async request => {
             return {
                 ...(await getNamesFromId(request.toUserId)),
@@ -48,7 +48,7 @@ export default async function Transactions(){
 
         // oh. my. goodness. 'await Promise.all()' is the silliest thing ive seen in my life but for some reason I can't just await it directly. WHY???
 
-    const receivedFriendRequestsProps = await Promise.all(receivedFriendRequests
+    const receivedTransactionProps = await Promise.all(receivedFriendRequests
         .map(async request => {
             return {
                 ...(await getNamesFromId(request.fromUserId)),
@@ -75,10 +75,10 @@ export default async function Transactions(){
                             <TabsTrigger value="sent">Sent Transaction Requests</TabsTrigger>
                         </TabsList>
                         <TabsContent value="received">
-                            <ReceivedTransactionsTable receivedTransactionRequests={receivedFriendRequestsProps} />
+                            <ReceivedTransactionsTable receivedTransactionRequests={receivedTransactionProps} />
                         </TabsContent>
                         <TabsContent value="sent">
-                            <SentTransactionsTable sentTransactionRequests={sentFriendRequestsProps} />
+                            <SentTransactionsTable sentTransactionRequests={sentTransactionProps} />
                         </TabsContent>
                     </Tabs>
                 </div>
