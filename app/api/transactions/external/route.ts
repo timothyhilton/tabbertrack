@@ -35,9 +35,11 @@ export async function POST(request: NextRequest) {
         data: {
             userId: userId,
             externalFriendId: externalFriend.id,
-            doesUserOwe: (data.userWhoOwes == "sender") ? true : false
+            doesUserOwe: (data.userWhoOwes == "sender") ? true : false,
+            amount: data.amount,
+            description: data.description
         }
     })
 
-    return NextResponse.json({ success: "yay" })
+    return NextResponse.json({ success: "Transaction submitted successfully" })
 }

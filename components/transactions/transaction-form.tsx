@@ -90,7 +90,7 @@ export default function TransactionForm({ friendNames, externalFriendNames, type
                             return (
                                 <SelectItem value={name.username} key={name.username}>
                                     <div className="flex flex-row flex-nowrap">
-                                        <UserLink username={name.username} name={name.username} link={true} />
+                                        <UserLink username={name.username} name={name.name} link={false} />
                                     </div>
                                 </SelectItem>
                             )

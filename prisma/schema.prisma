@@ -97,4 +97,6 @@ model ExternalTransaction {
     user   User @relation(fields: [userId], references: [id])
 
     doesUserOwe Boolean
+    amount      Float
+    description String
 }
