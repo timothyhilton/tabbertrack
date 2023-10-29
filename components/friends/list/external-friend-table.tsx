@@ -26,7 +26,7 @@ export default function ExternalFriendTable({ friends }: ExternalFriendTableProp
                             return (
                                 <TableRow key={friend.name}>
                                     <TableCell className="flex flex-col md:flex-row text-xs md:text-sm">
-                                        {friend.name}
+                                        <UserLink name={friend.name} link={true} external={true} />
                                     </TableCell>
 
                                     <TableCell></TableCell> {/* see comment on line 21 */}
