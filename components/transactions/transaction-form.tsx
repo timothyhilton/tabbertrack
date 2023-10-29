@@ -29,9 +29,9 @@ export default function TransactionForm({ friendNames, externalFriendNames, type
     })
 
     async function onSubmit(){
-        const res = await fetch("/api/transactions", {
+        const res = await fetch(((type == "normal") ? "/api/transactions" : "/api/transactions/external"), {
             method: "POST",
-            body: JSON.stringify(data)
+            body: JSON.stringify({name: data.username, ...data})
         })
 
         const resJSON = await res.json()
