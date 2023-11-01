@@ -9,86 +9,55 @@ import { getServerSession } from "next-auth"
 import { redirect } from "next/navigation"
 
 interface paramProps{
-    params: { username: string }
+    params: { name: string }
 }
 
 export default async function UserPage({ params }: paramProps){
-    const username = params.username
+    const name = params.name
     const session = await getServerSession(authOptions)
     if(!session){
         redirect('/api/auth/signin')
     }
+    const userId = parseInt(session.user!.id)
 
-    const user = await prisma.user.findFirst({
+    const externalFriend = await prisma.externalFriend.findFirst({
         where: {
-            username: username,
-            friend: {
-                some: {
-                    id: parseInt(session.user!.id)
-                }
-            }
+            userId: userId,
+            name: name
         }
     })
-    if(!user){
+    if(!externalFriend){
         redirect('/404')
     }
 
-    const transactionsForTable = await Promise.all((await prisma.transaction.findMany({
+    const transactionsForTable = await Promise.all((await prisma.externalTransaction.findMany({
         where: {
-            OR: [
-                {
-                    userWhoIsOwedId: parseInt(session.user!.id),
-                    userWhoOwesId: user.id
-                },
-                {
-                    userWhoOwesId: parseInt(session.user!.id),
-                    userWhoIsOwedId: user.id
-                }
-            ]
+            userId: userId,
+            externalFriendId: externalFriend.id
         }
     })).map(async transaction => {
-        let user
-        if(transaction.fromUserId == parseInt(session.user!.id)){ // if the logged in user sent the transaction, modify the "status" to not show buttons if pending
-            user = await prisma.user.findFirst({where:{id:transaction.toUserId}})
-            transaction.status = (transaction.status == "pending") ? "sent - pending" : ((transaction.status == "accepted") ? "sent - accepted" : "sent - pending") // i know this is wacky
-            user!.name = session.user!.name!
-            user!.username = session.user!.username
-        } else {
-            user = await prisma.user.findFirst({where:{id:transaction.fromUserId}})
-        }
-
         return {
-            name: user!.name!,
-            username: user!.username,
+            name: externalFriend.name,
             amount: transaction.amount,
-            status: transaction.status, 
+            status: "accepted", 
             createdAt: transaction.createdAt,
             id: transaction.id,
             description: transaction.description,
-            doesSenderOwe: transaction.doesSenderOwe
+            doesSenderOwe: !transaction.doesUserOwe,
         }
     }))
 
-    const transactions = await prisma.transaction.findMany({
+    const transactions = await prisma.externalTransaction.findMany({
         where: {
-            OR: [
-                {
-                    userWhoIsOwedId: parseInt(session!.user!.id),
-                    userWhoOwesId: user.id
-                },
-                {
-                    userWhoOwesId: parseInt(session!.user!.id),
-                    userWhoIsOwedId: user.id
-                }
-            ],
-            status: "accepted"
+            userId: userId,
+            externalFriendId: externalFriend.id
         }
     })
     
     let amountOwed = 0
 
     transactions.forEach(transaction => {
-        if (transaction.userWhoIsOwedId == parseInt(session!.user!.id)) {
+        if (!transaction.doesUserOwe) {
             amountOwed += transaction.amount
         } else {
             amountOwed -= transaction.amount
@@ -105,24 +74,24 @@ export default async function UserPage({ params }: paramProps){
                             <Avatar>
                                 <AvatarImage src="https://github.com/shadsdfdcn.png" />
                                 <AvatarFallback>
-                                    {username.slice(0, 2).toUpperCase()}
+                                    {name.slice(0, 2).toUpperCase()}
                                 </AvatarFallback>
                             </Avatar>
                             <div className="ml-2 mr-3">
-                                <CardTitle>{user.name}</CardTitle>
-                                <CardDescription>{user.username}</CardDescription>
+                                <CardTitle>{name}</CardTitle>
+                                <CardDescription>tell {name} to sign up for TabberTrack!</CardDescription>
                             </div>
 
-                            <UnfriendButton username={user.username}/>
+                            {/*<UnfriendButton username={user.username}/>*/}
                         </CardContent>
                     </Card>
                     <Card className="ml-4 w-fit pt-6">
                         <CardContent className="">
                             <CardTitle className="w-full">
                                 { (Math.sign(amountOwed) === 1) ?
-                                    <span className="">{`${user.name} owes you $`}</span> 
+                                    <span className="">{`${name} owes you $`}</span> 
                                     : 
-                                    <span className="">{`You owe ${user.name} $`}</span>
+                                    <span className="">{`You owe ${name} $`}</span>
                                 }
                                 {Math.abs(amountOwed)}
                             </CardTitle>

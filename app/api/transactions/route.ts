@@ -53,5 +53,5 @@ export async function POST(request: NextRequest) {
         }
     })
 
-    return NextResponse.json({ success: "Transaction submitted successfully "}, { status: 201 })
+    return NextResponse.json({ success: "Transaction submitted successfully"}, { status: 201 })
 }

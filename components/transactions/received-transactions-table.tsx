@@ -13,7 +13,7 @@ import UserLink from "../ui/userlink"
 interface SentTransactionsTableProps{
     receivedTransactionRequests: {
         name: string,
-        username: string,
+        username?: string,
         amount: number,
         status: string,
         createdAt: Date,

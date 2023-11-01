@@ -8,24 +8,25 @@ datasource db {
 }
 
 model User {
-    id                     Int              @id @default(autoincrement())
-    email                  String           @unique
-    username               String           @unique
+    id                     Int                   @id @default(autoincrement())
+    email                  String                @unique
+    username               String                @unique
     password               String?
     name                   String?
-    active                 Boolean          @default(false)
-    createdAt              DateTime         @default(now())
-    updatedAt              DateTime         @updatedAt
+    active                 Boolean               @default(false)
+    createdAt              DateTime              @default(now())
+    updatedAt              DateTime              @updatedAt
     activateTokens         ActivateToken[]
-    sentFriendRequests     FriendRequest[]  @relation("from")
-    receivedFriendRequests FriendRequest[]  @relation("to")
-    friend                 User[]           @relation("friends")
-    friendOf               User[]           @relation("friends") // can mostly be ignored
+    sentFriendRequests     FriendRequest[]       @relation("from")
+    receivedFriendRequests FriendRequest[]       @relation("to")
+    friend                 User[]                @relation("friends")
+    friendOf               User[]                @relation("friends") // can mostly be ignored
     ExternalFriend         ExternalFriend[]
-    sentTransactions       Transaction[]    @relation("from")
-    recievedTransactions   Transaction[]    @relation("to")
-    tWhereUserIsOwed Transaction[] @relation("userWhoIsOwed")
-    tWhereUserOwes Transaction[] @relation("userWhoOwes")
+    sentTransactions       Transaction[]         @relation("from")
+    recievedTransactions   Transaction[]         @relation("to")
+    tWhereUserIsOwed       Transaction[]         @relation("userWhoIsOwed")
+    tWhereUserOwes         Transaction[]         @relation("userWhoOwes")
+    externalTransactions   ExternalTransaction[]
 }
 
 model Transaction {
@@ -40,10 +41,10 @@ model Transaction {
     to         User @relation(fields: [toUserId], references: [id], name: "to")
 
     userWhoOwesId Int
-    userWhoOwes User @relation(fields: [userWhoOwesId], references: [id], name: "userWhoOwes")
+    userWhoOwes   User @relation(fields: [userWhoOwesId], references: [id], name: "userWhoOwes")
 
     userWhoIsOwedId Int
-    userWhoIsOwed User @relation(fields: [userWhoIsOwedId], references: [id], name: "userWhoIsOwed")
+    userWhoIsOwed   User @relation(fields: [userWhoIsOwedId], references: [id], name: "userWhoIsOwed")
 
     amount        Float
     doesSenderOwe Boolean
@@ -81,6 +82,21 @@ model ExternalFriend {
 
     name               String
     outstandingBalance Float  @default(0.0)
+
+    externalTransactions ExternalTransaction[]
 }
 
+model ExternalTransaction {
+    id        Int      @id @default(autoincrement())
+    createdAt DateTime @default(now())
 
+    externalFriendId Int
+    externalFriend   ExternalFriend @relation(fields: [externalFriendId], references: [id])
+
+    userId Int
+    user   User @relation(fields: [userId], references: [id])
+
+    doesUserOwe Boolean
+    amount      Float
+    description String
+}

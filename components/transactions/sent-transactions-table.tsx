@@ -8,6 +8,7 @@ import { Popover, PopoverContent, PopoverTrigger } from "../ui/popover"
 import { Switch } from "../ui/switch"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "../ui/table"
 import ReactTimeAgo from 'react-time-ago'
+import UserLink from "../ui/userlink"
 
 interface SentTransactionsTableProps{
     sentTransactionRequests: {
@@ -63,8 +64,7 @@ export default function SentTransactionsTable({ sentTransactionRequests }: SentT
                                         <TimeAgoWrapper date={transaction.createdAt} /> ago
                                     </TableCell>
                                     <TableCell className="flex flex-col md:flex-row text-xs md:text-sm">
-                                        <p>{transaction.name}</p>
-                                        <p className="text-muted-foreground whitespace-nowrap">&nbsp;/ {transaction.username}</p>
+                                        <UserLink name={transaction.name} username={transaction.username} link={true} />
                                     </TableCell>
                                     <TableCell className="text-xs md:text-sm">
                                         {transaction.description ? (
