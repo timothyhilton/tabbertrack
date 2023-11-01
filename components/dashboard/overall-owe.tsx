@@ -54,7 +54,7 @@ export default async function OverallOwe() {
     })
 
     externalTransactions.forEach(transaction => {
-        let externalFriendName = externalFriends.find(friend => friend.id = transaction.externalFriendId)!.name
+        let externalFriendName = externalFriends.find(friend => friend.id == transaction.externalFriendId)!.name
 
         if (!transaction.doesUserOwe) {
             balances[externalFriendName] += transaction.amount
@@ -75,20 +75,20 @@ export default async function OverallOwe() {
     });
 
     return(
-        <div className="text-lg flex justify-center space-x-44">
+        <div className="lg:text-lg flex justify-center lg:space-x-44">
             <div>
-                <h2 className="flex justify-center">
+                <h2 className="text-sm md:text-base font-bold md:font-normal flex justify-center text-center px-3">
                     You collectively owe everyone
                 </h2>
-                <h1 className="text-8xl flex justify-center">
+                <h1 className="text-4xl md:text-5xl lg:text-8xl flex justify-center">
                     {`$${moneyUserOwes.toFixed(2)}`}
                 </h1>
             </div>
             <div>
-                <h2 className="flex justify-center">
+                <h2 className="text-sm md:text-base font-bold md:font-normal flex justify-center text-center px-3">
                     Everyone collectively owes you
                 </h2>
-                <h1 className="text-8xl flex justify-center">
+                <h1 className="text-4xl md:text-5xl lg:text-8xl flex justify-center">
                     {`$${moneyUserIsOwed.toFixed(2)}`}
                 </h1>
             </div>
