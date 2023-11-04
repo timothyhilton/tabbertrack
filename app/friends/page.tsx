@@ -8,6 +8,7 @@ import { authOptions } from "../api/auth/[...nextauth]/route";
 import prisma from "@/db";
 import FriendTable from "@/components/friends/list/friend-table";
 import ExternalFriendTable from "@/components/friends/list/external-friend-table";
+import NotificationBubble from "@/components/notifications/notification-bubble";
 
 export default async function Friends(){
     const session = await getServerSession(authOptions)
@@ -40,6 +41,13 @@ export default async function Friends(){
         })
     })
 
+    const friendNotifCount = await prisma.friendRequest.count({
+        where: {
+          status: 'pending',
+          toUserId: parseInt(session!.user!.id)
+        },
+    });
+
     return(
         <>
             <NavBar />
@@ -49,6 +57,7 @@ export default async function Friends(){
                     <Link href="/friends/requests">
                         <Button>
                             See requests
+                            <NotificationBubble num={friendNotifCount} className="right-[-0.3rem] top-[-0.3rem]" />
                         </Button>
                     </Link>
                 </div>

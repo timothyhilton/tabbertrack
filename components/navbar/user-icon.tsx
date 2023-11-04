@@ -29,7 +29,7 @@ export default async function UserIcon(){
         <DropdownMenu>
             <DropdownMenuTrigger asChild>
                 <Button variant="ghost" className="relative h-9 w-9 rounded-full">
-                    <NotificationBubble num={transactionNotifCount + friendNotifCount}/>
+                    <NotificationBubble num={transactionNotifCount + friendNotifCount} className="absolute right-0 top-0"/>
                     <Avatar>
                         <AvatarImage src="https://github.com/shadcnjkk.png"/>
                         <AvatarFallback className="dark:bg-slate-800 bg-slate-200">
@@ -54,11 +54,13 @@ export default async function UserIcon(){
                     <Link href="/friends" className="hover:cursor-wait">
                         <DropdownMenuItem>
                             Friends
+                            <NotificationBubble num={friendNotifCount} className="left-[3.2rem] top-1" />
                         </DropdownMenuItem>
                     </Link>
                     <Link href="/transactions" className="hover:cursor-wait">
                         <DropdownMenuItem>
                             Transactions
+                            <NotificationBubble num={transactionNotifCount} className="left-[5.1rem] top-1" />
                         </DropdownMenuItem>
                     </Link>
                 </DropdownMenuGroup>
