@@ -63,6 +63,11 @@ export default async function UserIcon(){
                             <NotificationBubble num={transactionNotifCount} className="left-[5.1rem] top-1" />
                         </DropdownMenuItem>
                     </Link>
+                    <Link href="/settings" className="hover:cursor-wait">
+                        <DropdownMenuItem>
+                            Settings
+                        </DropdownMenuItem>
+                    </Link>
                 </DropdownMenuGroup>
                 <DropdownMenuSeparator />
 
