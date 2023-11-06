@@ -61,7 +61,7 @@ export default function SentTransactionsTable({ sentTransactionRequests }: SentT
                             return (
                                 <TableRow key={transaction.username}>
                                     <TableCell className="font-medium text-xs md:text-sm">
-                                        <TimeAgoWrapper date={transaction.createdAt} /> ago
+                                        <TimeAgoWrapper date={transaction.createdAt} />
                                     </TableCell>
                                     <TableCell className="flex flex-col md:flex-row text-xs md:text-sm">
                                         <UserLink name={transaction.name} username={transaction.username} link={true} />

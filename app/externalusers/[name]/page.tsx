@@ -93,7 +93,7 @@ export default async function UserPage({ params }: paramProps){
                                     : 
                                     <span className="">{`You owe ${name} $`}</span>
                                 }
-                                {Math.abs(amountOwed)}
+                                {Math.abs(amountOwed).toFixed(2)}
                             </CardTitle>
                             <CardDescription>
                                 { (Math.sign(amountOwed) === 1) ?
