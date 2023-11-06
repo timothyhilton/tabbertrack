@@ -77,7 +77,7 @@ export default function ReceivedTransactionsTable({ receivedTransactionRequests 
                                 <TableRow key={transaction.id}>
                                     
                                     <TableCell className="font-medium text-xs md:text-sm">
-                                        <TimeAgoWrapper date={transaction.createdAt} /> ago
+                                        <TimeAgoWrapper date={transaction.createdAt} />
                                     </TableCell>
 
                                     <TableCell className="flex flex-col md:flex-row text-xs md:text-sm">

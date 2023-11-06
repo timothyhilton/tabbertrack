@@ -55,7 +55,7 @@ export default function SentFriendReqTable({ sentFriendRequests }: SentFriendReq
                             return (
                                 <TableRow key={friend.username}>
                                     <TableCell className="font-medium text-xs md:text-sm">
-                                        <TimeAgoWrapper date={friend.createdAt} /> ago
+                                        <TimeAgoWrapper date={friend.createdAt} />
                                     </TableCell>
                                     <TableCell className="flex flex-col md:flex-row text-xs md:text-sm">
                                         <p>{friend.name}</p>

@@ -50,7 +50,7 @@ export default async function UserPage({ params }: paramProps){
         let user
         if(transaction.fromUserId == parseInt(session.user!.id)){ // if the logged in user sent the transaction, modify the "status" to not show buttons if pending
             user = await prisma.user.findFirst({where:{id:transaction.toUserId}})
-            transaction.status = (transaction.status == "pending") ? "sent - pending" : ((transaction.status == "accepted") ? "sent - accepted" : "sent - pending") // i know this is wacky
+            transaction.status = (transaction.status == "pending") ? "sent - pending" : ((transaction.status == "accepted") ? "sent - accepted" : "sent - pending") // i know this is wacky, sorry
             user!.name = session.user!.name!
             user!.username = session.user!.username
         } else {
@@ -65,7 +65,7 @@ export default async function UserPage({ params }: paramProps){
             createdAt: transaction.createdAt,
             id: transaction.id,
             description: transaction.description,
-            doesSenderOwe: transaction.doesSenderOwe
+            doesSenderOwe: transaction.toUserId == parseInt(session.user!.id) ? transaction.doesSenderOwe : !transaction.doesSenderOwe
         }
     }))
 
@@ -124,7 +124,7 @@ export default async function UserPage({ params }: paramProps){
                                     : 
                                     <span className="">{`You owe ${user.name} $`}</span>
                                 }
-                                {Math.abs(amountOwed)}
+                                {Math.abs(amountOwed).toFixed(2)}
                             </CardTitle>
                             <CardDescription>
                                 { (Math.sign(amountOwed) === 1) ?
