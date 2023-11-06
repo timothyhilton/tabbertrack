@@ -5,6 +5,9 @@ import { Button } from "../ui/button";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "../ui/dialog";
 import { Label } from "../ui/label";
 import { Input } from "../ui/input";
+import { useState } from "react";
+import router from "next/router";
+import { Alert, AlertDescription, AlertTitle } from "../ui/alert";
 
 interface settingsDialogProps {
     name: string,
@@ -14,7 +17,24 @@ interface settingsDialogProps {
 
 export default function SettingsDialog({ name, username, email }: settingsDialogProps){
     const { register, handleSubmit } = useForm()
-    function onSubmit(e: any){console.log(e)}
+    const [error, setError] = useState("")
+    const [errorBoxColour, setErrorBoxColour] = useState("")
+
+    async function onSubmit(data: any){
+        const res = await fetch("/api/auth/update", {
+            method: "PUT",
+            body: JSON.stringify(data)
+        })
+
+        const resJSON = await res.json()
+
+        if(resJSON.error){
+            setError(resJSON.error)
+        } else {
+            setErrorBoxColour("bg-green-500")
+            setError(resJSON.success)
+        }
+    }
 
     return (
         <Dialog>
@@ -25,6 +45,14 @@ export default function SettingsDialog({ name, username, email }: settingsDialog
                 </DialogHeader>
 
                 <form onSubmit={handleSubmit(onSubmit)}>
+                    {error &&
+                        <Alert className={`bg-red-500 ${errorBoxColour}`}>
+                            <AlertTitle>Hey!</AlertTitle>
+                            <AlertDescription>
+                            {error}
+                            </AlertDescription>
+                        </Alert>
+                    }
                     <Label>
                         name
                         <Input {...register("name")} defaultValue={name} />
