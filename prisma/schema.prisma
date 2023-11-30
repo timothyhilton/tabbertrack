@@ -29,6 +29,7 @@ model User {
     tWhereUserOwes            Transaction[]              @relation("userWhoOwes")
     externalTransactions      ExternalTransaction[]
     accountInfoChangeAttempts AccountInfoChangeAttempt[]
+    emailChangeAttempts       EmailChangeAttempt[]
 }
 
 model Transaction {
@@ -116,4 +117,7 @@ model AccountInfoChangeAttempt {
     newUsername     String
     newEmail        String
     newPasswordHash String
+
+    userOwnsNewEmail            Boolean @default(false)
+    verificationTokenToNewEmail String? @unique
 }

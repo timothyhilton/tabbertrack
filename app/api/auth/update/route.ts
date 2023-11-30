@@ -35,7 +35,7 @@ export async function PUT(request: Request) {
             }
         })
         if(successful){return(NextResponse.json({ success: "User info updated successfully" }, { status: 201 }))}
-    } 
+    }
     else { // if the user is changing their email or password
         if(data.email != session.user!.email){ // i know this is nested, but it's to avoid an unnecessary db query
             const existingUserWithEmailCheck = await prisma.user.findFirst({where: {email: data.email}})
