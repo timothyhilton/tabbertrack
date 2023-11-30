@@ -4,6 +4,10 @@ import { authOptions } from "../[...nextauth]/route";
 import prisma from "@/db";
 import { hash } from "bcrypt";
 import { randomUUID } from "crypto";
+import { Client } from "postmark";
+
+const postmarkClient = new Client(process.env.POSTMARK_SERVER_TOKEN!)
+const siteUrl = process.env.SITE_URL
 
 export async function PUT(request: Request) {
 
@@ -32,25 +36,39 @@ export async function PUT(request: Request) {
         })
         if(successful){return(NextResponse.json({ success: "User info updated successfully" }, { status: 201 }))}
     } 
-    else {
-        const existingUserWithEmailCheck = await prisma.user.findFirst({where: {email: data.email}})
-        if(existingUserWithEmailCheck){return(NextResponse.json({ error: "Someone already has that email" }, { status: 400 }))}
-
-        let newPass = ""
-        if(!(data.password == "")){
-            newPass = await hash(data.password as string, 12)
+    else { // if the user is changing their email or password
+        if(data.email != session.user!.email){ // i know this is nested, but it's to avoid an unnecessary db query
+            const existingUserWithEmailCheck = await prisma.user.findFirst({where: {email: data.email}})
+            if(existingUserWithEmailCheck){return(NextResponse.json({ error: "Someone already has that email" }, { status: 400 }))}
         }
 
-        await prisma.accountInfoChangeAttempt.create({
+        let newPassHash = ""
+        if(data.password != ""){
+            newPassHash = await hash(data.password as string, 12)
+        }
+
+        const accountInfoChangeAttempt = await prisma.accountInfoChangeAttempt.create({
             data: {
                 newName: data.name,
                 newUsername: data.username,
                 newEmail: data.email,
                 userId: parseInt(session.user.id),
-                newPasswordHash: newPass,
+                newPasswordHash: newPassHash,
                 verificationToken: `${randomUUID()}${randomUUID()}`.replace(/-/g, '')
             }
         })
+
+        const email = await postmarkClient.sendEmailWithTemplate({
+            "From": "reset@tabbertrack.com",
+            "To": session.user!.email!,
+            "TemplateAlias": "infochange",
+            "TemplateModel": {
+            "person": {
+                "name": session.user!.name,
+                "activationToken": accountInfoChangeAttempt.verificationToken
+            },
+            "siteUrl": siteUrl
+        }})
 
         return(NextResponse.json({ success: "Check your email to confirm the changes" }, { status: 201 }))
     }

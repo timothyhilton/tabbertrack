@@ -62,18 +62,19 @@ export async function POST(request: Request) {
 
     // send verification email to user
 
-    try{ const email = await postmarkClient.sendEmailWithTemplate({
-        "From": "verify@tabbertrack.com",
-        "To": user.email,
-        "TemplateAlias": "verify",
-        "TemplateModel": {
-          "person": {
-            "name": user.name,
-            "activationToken": token.token
-          },
-          "siteUrl": siteUrl
-        }
-    })}
+    try{ 
+        const email = await postmarkClient.sendEmailWithTemplate({
+            "From": "verify@tabbertrack.com",
+            "To": user.email,
+            "TemplateAlias": "verify",
+            "TemplateModel": {
+            "person": {
+                "name": user.name,
+                "activationToken": token.token
+            },
+            "siteUrl": siteUrl
+        }})
+    }
     catch(e) {
         return NextResponse.json({ error: "Something went wrong" }, { status: 400 })
     }

@@ -8,6 +8,8 @@ import { Input } from "../ui/input";
 import { useState } from "react";
 import router from "next/router";
 import { Alert, AlertDescription, AlertTitle } from "../ui/alert";
+import { signOut, useSession } from 'next-auth/react'
+
 
 interface settingsDialogProps {
     name: string,
@@ -16,6 +18,7 @@ interface settingsDialogProps {
 }
 
 export default function SettingsDialog({ name, username, email }: settingsDialogProps){
+    const { data: session, status } = useSession()
     const { register, handleSubmit } = useForm()
     const [error, setError] = useState("")
     const [errorBoxColour, setErrorBoxColour] = useState("")
@@ -33,6 +36,9 @@ export default function SettingsDialog({ name, username, email }: settingsDialog
         } else {
             setErrorBoxColour("bg-green-500")
             setError(resJSON.success)
+
+            // if their changes don't require an email verification, log them out immediately
+            if(data.email == session!.user!.email && data.password == ""){signOut()}
         }
     }
 
