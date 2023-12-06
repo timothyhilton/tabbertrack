@@ -29,7 +29,6 @@ model User {
     tWhereUserOwes            Transaction[]              @relation("userWhoOwes")
     externalTransactions      ExternalTransaction[]
     accountInfoChangeAttempts AccountInfoChangeAttempt[]
-    emailChangeAttempts       EmailChangeAttempt[]
 }
 
 model Transaction {
