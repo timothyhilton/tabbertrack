@@ -4,6 +4,7 @@ import { randomUUID } from 'crypto';
 import { NextResponse } from 'next/server'
 import { Client } from 'postmark';
 import prisma from '@/db';
+import { validate } from 'email-validator';
 
 const postmarkClient = new Client(process.env.POSTMARK_SERVER_TOKEN!)
 const siteUrl = process.env.SITE_URL
@@ -21,6 +22,10 @@ export async function POST(request: Request) {
     if(!data.password){return NextResponse.json({ error: "No password defined" }, { status: 400 });}
 
     const password = await hash(data.password as string, 12)
+
+    if(!validate(data.email)){
+        return NextResponse.json({ error: "Email is invalid" }, { status: 400 })
+    }
 
     if( // check if email has already been used
         await prisma.user.findFirst({
@@ -47,7 +52,8 @@ export async function POST(request: Request) {
             name: data.name as string,
             email: data.email as string,
             username: data.username as string,
-            password: password
+            password: password,
+            credentialsProvider: true
         }
     })
 
@@ -62,18 +68,22 @@ export async function POST(request: Request) {
 
     // send verification email to user
 
-    postmarkClient.sendEmailWithTemplate({
-        "From": "verify@tabbertrack.com",
-        "To": user.email,
-        "TemplateAlias": "verify",
-        "TemplateModel": {
-          "person": {
-            "name": user.name,
-            "activationToken": token.token
-          },
-          "siteUrl": siteUrl
-        }
-    });
+    try{ 
+        const email = await postmarkClient.sendEmailWithTemplate({
+            "From": "verify@tabbertrack.com",
+            "To": user.email,
+            "TemplateAlias": "verify",
+            "TemplateModel": {
+            "person": {
+                "name": user.name,
+                "activationToken": token.token
+            },
+            "siteUrl": siteUrl
+        }})
+    }
+    catch(e) {
+        return NextResponse.json({ error: "Something went wrong" }, { status: 400 })
+    }
 
     return new NextResponse("created", data)
 }

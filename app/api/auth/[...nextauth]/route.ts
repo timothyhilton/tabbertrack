@@ -73,13 +73,11 @@ const authOptions: NextAuthOptions = {
                 throw new Error('No profile')
             }
             
-            // generates a random username for people using google login.
+            // generates a random username for people using google login
             // generates a new username if by chance it generates one that already exists
             // todo: do something less janky here.
-
+            let username = profile!.name!
             while(true){
-                let username: string = "TTUser" + Math.floor(Math.random() * 10000001)
-
                 if( // break if username is unique
                     !await prisma.user.findFirst({
                         where: {
@@ -87,6 +85,8 @@ const authOptions: NextAuthOptions = {
                         }
                     })
                 ) { break }
+
+                username += Math.floor(Math.random() * 10)
             }
 
             await prisma.user.upsert({
@@ -96,7 +96,8 @@ const authOptions: NextAuthOptions = {
                 create: {
                     email: profile.email,
                     name: profile.name,
-                    username: "TTUser" + Math.floor(Math.random() * 100001)
+                    username: username,
+                    credentialsProvider: false
                 },
                 update: {
                     name: profile.name

@@ -3,30 +3,34 @@ generator client {
 }
 
 datasource db {
-    provider = "postgresql"
-    url      = env("DATABASE_URL")
+    provider  = "postgresql"
+    url       = env("DATABASE_URL")
+    directUrl = env("POSTGRES_URL_NON_POOLING")
 }
 
 model User {
-    id                     Int                   @id @default(autoincrement())
-    email                  String                @unique
-    username               String                @unique
-    password               String?
-    name                   String?
-    active                 Boolean               @default(false)
-    createdAt              DateTime              @default(now())
-    updatedAt              DateTime              @updatedAt
-    activateTokens         ActivateToken[]
-    sentFriendRequests     FriendRequest[]       @relation("from")
-    receivedFriendRequests FriendRequest[]       @relation("to")
-    friend                 User[]                @relation("friends")
-    friendOf               User[]                @relation("friends") // can mostly be ignored
-    ExternalFriend         ExternalFriend[]
-    sentTransactions       Transaction[]         @relation("from")
-    recievedTransactions   Transaction[]         @relation("to")
-    tWhereUserIsOwed       Transaction[]         @relation("userWhoIsOwed")
-    tWhereUserOwes         Transaction[]         @relation("userWhoOwes")
-    externalTransactions   ExternalTransaction[]
+    id                        Int                        @id @default(autoincrement())
+    email                     String                     @unique
+    username                  String                     @unique
+    password                  String?
+    name                      String?
+    active                    Boolean                    @default(false)
+    createdAt                 DateTime                   @default(now())
+    updatedAt                 DateTime                   @updatedAt
+    activateTokens            ActivateToken[]
+    sentFriendRequests        FriendRequest[]            @relation("from")
+    receivedFriendRequests    FriendRequest[]            @relation("to")
+    friend                    User[]                     @relation("friends")
+    friendOf                  User[]                     @relation("friends") // can mostly be ignored
+    ExternalFriend            ExternalFriend[]
+    sentTransactions          Transaction[]              @relation("from")
+    recievedTransactions      Transaction[]              @relation("to")
+    tWhereUserIsOwed          Transaction[]              @relation("userWhoIsOwed")
+    tWhereUserOwes            Transaction[]              @relation("userWhoOwes")
+    externalTransactions      ExternalTransaction[]
+    accountInfoChangeAttempts AccountInfoChangeAttempt[]
+    emailChangeAttempts       EmailChangeAttempt[]
+    credentialsProvider       Boolean
 }
 
 model Transaction {
@@ -99,4 +103,35 @@ model ExternalTransaction {
     doesUserOwe Boolean
     amount      Float
     description String
+}
+
+model AccountInfoChangeAttempt {
+    id                Int       @id @default(autoincrement())
+    verificationToken String    @unique
+    activatedAt       DateTime?
+    createdAt         DateTime  @default(now())
+    updatedAt         DateTime  @updatedAt
+    user              User      @relation(fields: [userId], references: [id])
+    userId            Int
+
+    newName         String
+    newUsername     String
+    newPasswordHash String
+}
+
+model EmailChangeAttempt {
+    id          Int       @id @default(autoincrement())
+    activatedAt DateTime?
+    confirmedAt DateTime?
+    createdAt   DateTime  @default(now())
+    updatedAt   DateTime  @updatedAt
+    user        User      @relation(fields: [userId], references: [id])
+    userId      Int
+
+    newEmail String
+
+    verificationToken           String @unique
+    verificationTokenToNewEmail String @unique
+
+    cancelled Boolean @default(false)
 }
