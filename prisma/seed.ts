@@ -12,7 +12,8 @@ async function main() {
             name: 'asdf',
             username: 'asdfusername',
             active: true,
-            password: password
+            password: password,
+            credentialsProvider: true
         }
     })
     console.log({ user })
