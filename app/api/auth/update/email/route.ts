@@ -5,6 +5,7 @@ import prisma from "@/db";
 import { hash } from "bcrypt";
 import { randomUUID } from "crypto";
 import { Client } from "postmark";
+import { validate } from 'email-validator';
 
 const postmarkClient = new Client(process.env.POSTMARK_SERVER_TOKEN!)
 const siteUrl = process.env.SITE_URL
@@ -14,6 +15,10 @@ export async function PUT(request: Request) {
     const data = await request.json()
 
     if(!data.email){return NextResponse.json({ error: "No email defined" }, { status: 400 });}
+    
+    if(!validate(data.email)){
+        return NextResponse.json({ error: "Email is invalid" }, { status: 400 })
+    }
 
     const session = await getServerSession(authOptions)
     if(!session || !session.user){return(NextResponse.json({ error: "Unauthorized" }, { status: 401 }))}
