@@ -47,7 +47,8 @@ export async function POST(request: Request) {
             name: data.name as string,
             email: data.email as string,
             username: data.username as string,
-            password: password
+            password: password,
+            credentialsProvider: true
         }
     })
 

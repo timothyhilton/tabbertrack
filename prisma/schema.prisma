@@ -30,6 +30,7 @@ model User {
     externalTransactions      ExternalTransaction[]
     accountInfoChangeAttempts AccountInfoChangeAttempt[]
     emailChangeAttempts       EmailChangeAttempt[]
+    credentialsProvider       Boolean
 }
 
 model Transaction {

@@ -18,6 +18,14 @@ export async function PUT(request: Request) {
     const session = await getServerSession(authOptions)
     if(!session || !session.user){return(NextResponse.json({ error: "Unauthorized" }, { status: 401 }))}
 
+    const user = (await prisma.user.findFirst({
+        where: {
+            id: parseInt(session!.user!.id)
+        }
+    }))!
+
+    if(!user.credentialsProvider){return(NextResponse.json({ error: "Cannot change email for Google accounts" }, { status: 401 }))}
+
     const emailChangeAttempt = await prisma.emailChangeAttempt.create({
         data: {
             newEmail: data.email,
