@@ -1,36 +1,67 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# TabberTrack
 
-## Getting Started
+This is the source code for the website [tabbertrack.com](https://tabbertrack.com).
 
-First, run the development server:
+TabberTrack is "The all in one solution for managing how much money you and your friends owe eachother." I created this website to learn the ins-and-outs of developing and deploying a complete full-stack web application. The website is, for the most part, completely production ready and I encourage you to try it out and even use it in the real world if the app appeals to you.
+
+## Getting started
+
+Go to [tabbertrack.com](https://tabbertrack.com) and signup! It's that easy!
+
+With that said: if you would like to setup a development environment, click [here](#setup-a-development-environment).
+
+## What did I use?
+
+The "stack" I chose was:
+
+-   [Next.js](https://nextjs.org/) and by extension, [React](https://react.dev/)
+-   [Postgresql](https://www.postgresql.org/)
+-   [Prisma](https://www.prisma.io/)
+-   [Tailwind CSS](https://tailwindcss.com/)
+
+Other notable packages were:
+
+-   [NextAuth.js](https://next-auth.js.org/)
+-   [Postmark](https://postmarkapp.com/)
+-   [shadcn/ui](https://ui.shadcn.com/)
+
+The website is hosted on [Vercel](https://vercel.com/) and uses [Vercel Postgres](https://vercel.com/docs/storage/vercel-postgres) for production.
+
+## Setup a development environment
+
+### Prerequisites
+
+-   [Node.js](https://nodejs.org/en/download/)
+-   [Postgresql](https://www.postgresql.org/download/)
+-   A verified [Postmark](https://postmarkapp.com/) account
+-   A [Google Cloud API](https://cloud.google.com/apis) "Client ID for Web application"
+
+### Installation
+
+1. Clone the repository:
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+git clone https://github.com/timothyhilton/tabbertrack
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+2. Fill in all of the environment variables:
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+```bash
+cp .env.example .env
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+Use your text editor of choice to edit the .env file
 
-## Learn More
+3. Let npm install everything:
 
-To learn more about Next.js, take a look at the following resources:
+```bash
+npm install
+```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+4. Migrate the database:
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+```bash
+npx prisma db push
+```
 
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+Open http://localhost:3000 with your browser to see the result.
