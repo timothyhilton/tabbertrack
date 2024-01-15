@@ -12,6 +12,7 @@ import {
   } from "@/components/ui/card"
 import { Button } from "@/components/ui/button";
 import SettingsDialog from "@/components/settings/dialog";
+import EmailDialog from "@/components/settings/emaildialog";
 
 export default async function SettingsPage(){
     const session = await getServerSession(authOptions)
@@ -46,8 +47,9 @@ export default async function SettingsPage(){
                             <p className="text-lg">{session.user.email}</p>
                         </div>
                     </CardContent>
-                    <CardFooter>
+                    <CardFooter className="space-x-6">
                         <SettingsDialog name={session.user.name!} username={session.user.username} email={session.user.email!} />
+                        <EmailDialog />
                     </CardFooter>
                 </Card>
             </div>
