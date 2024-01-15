@@ -47,7 +47,7 @@ export default async function Confirm({ params }: paramProps) {
         }
     }))!
 
-    if(ECA.cancelled) {return <ErrorComponent error="This request has been cancelled." />}
+    if(ECA.cancelled) {return <ErrorComponent error="This request has been cancelled by the user who made it." />}
     
     await prisma.emailChangeAttempt.update({
         where: {

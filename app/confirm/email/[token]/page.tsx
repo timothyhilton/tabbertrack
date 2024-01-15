@@ -46,7 +46,7 @@ export default async function Confirm({ params }: paramProps) {
         }
     }))!
 
-    if(ECA.activatedAt){return <AwaitingEmailChange email={ECA.newEmail} />}
+    if(ECA.activatedAt){return <AwaitingEmailChange email={ECA.newEmail} token={token} />}
     
     await prisma.emailChangeAttempt.update({
         where: {
@@ -70,5 +70,5 @@ export default async function Confirm({ params }: paramProps) {
         "siteUrl": siteUrl
     }})
 
-    return <AwaitingEmailChange email={ECA.newEmail} />
+    return <AwaitingEmailChange email={ECA.newEmail} token={token} />
 }
