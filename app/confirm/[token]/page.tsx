@@ -45,36 +45,21 @@ export default async function Confirm({ params }: paramProps) {
         }
     })
 
-    if(ACIA.activatedAt){
-        return(
-            <AwaitingEmailChange email={ACIA.newEmail} />
-        )
+    if(await compare("", ACIA.newPasswordHash)){
+        ACIA.newPasswordHash = ""
     }
 
-    if(ACIA.newEmail == user.email){
+    await prisma.user.update({
+        where: {
+            id: user.id
+        },
+        data: {
+            username: ACIA.newUsername,
+            name: ACIA.newName,
 
-        if(await compare("", ACIA.newPasswordHash)){
-            ACIA.newPasswordHash = ""
+            // if the new password isn't nothing (aka the user is actually changing it) then set it correctly, otherwise don't change it
+            password: ACIA.newPasswordHash == "" ? user.password : ACIA.newPasswordHash
         }
-
-        await prisma.user.update({
-            where: {
-                id: user.id
-            },
-            data: {
-                username: ACIA.newUsername,
-                name: ACIA.newName,
-
-                // if the new password isn't nothing (aka the user is actually changing it) then set it correctly, otherwise don't change it
-                password: ACIA.newPasswordHash == "" ? user.password : ACIA.newPasswordHash
-            }
-        });
-        return redirect("/login")
-
-    } else {
-
-        return(
-            <AwaitingEmailChange email={ACIA.newEmail} />
-        )
-    }
+    });
+    return redirect("/login")
 }
