@@ -32,6 +32,22 @@ export default function AwaitingEmailChange({email, token}: {email: string, toke
         }
     }
 
+    async function resendRequest(){
+        const res = await fetch("/api/auth/update/email/resend", {
+            method: "POST",
+            body: JSON.stringify(token)
+        })
+
+        const resJSON = await res.json()
+
+        if(resJSON.error){
+            setError(resJSON.error)
+        } else {
+            setErrorBoxColour("bg-green-500")
+            setError(resJSON.success)
+        }
+    }
+
     return(
         <div className="flex h-screen">
             <Card className="m-auto">
@@ -51,7 +67,7 @@ export default function AwaitingEmailChange({email, token}: {email: string, toke
                 </CardContent>
                 <CardFooter>
                     <Button className="w-full mr-6" onClick={cancelRequest}>Cancel</Button>
-                    <Button className="w-full">Resend</Button>
+                    <Button className="w-full" onClick={resendRequest}>Resend</Button>
                 </CardFooter>
             </Card>
         </div>
