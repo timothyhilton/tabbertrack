@@ -22,7 +22,7 @@ export default async function Home() {
           <h2 className='mt-2 text-xl text-muted-foreground max-w-xl'>
             The all in one solution for managing how much money you and your friends owe eachother.
           </h2>
-          
+          <Link href="/register"><Button variant="outline" className="mt-5"><b>Register Now</b></Button></Link>
         </div>
         
         <div className="max-w-[25rem] mx-auto mt-4 lg:mt-[5rem]">
