@@ -1,7 +1,6 @@
 import { authOptions } from './api/auth/[...nextauth]/route'
 import { LoginButton } from '../components/auth'
 import { getServerSession } from 'next-auth'
-import { User } from './user'
 import { ModeToggle } from '@/components/ui/modetoggle'
 import { NavBar } from './navbar'
 
