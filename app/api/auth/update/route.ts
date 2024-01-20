@@ -30,8 +30,24 @@ export async function PUT(request: Request) {
     const existingUserWithUsernameCheck = await prisma.user.findFirst({where: {username: data.username}})
     if(existingUserWithUsernameCheck && !(data.username == session.user.username)){return(NextResponse.json({ error: "Someone already has that username" }, { status: 400 }))}
 
+    const user = (await prisma.user.findFirst({where:{id: parseInt(session.user!.id)}}))!
+
+    const dateSevenDaysAgo = new Date((new Date()).getTime() - 7 * 24 * 60 * 60 * 1000);
+    if(user.username != data.username && user.lastUsernameChangeDate && user.lastUsernameChangeDate > dateSevenDaysAgo){
+        return NextResponse.json({ error: "You must wait 7 days to change your username again" }, { status: 400 })
+    }
+
     // if the user isn't changing any sensitive info, and therefore doesn't require email verification
     if(!data.password || data.password == ""){
+
+        if(data.username != user.username){
+            await prisma.user.update({where: {id: parseInt(session.user.id)},
+                data: {
+                    lastUsernameChangeDate: new Date()
+                }
+            })
+        }
+
         const successful = await prisma.user.update({
             where: {
                 id: parseInt(session.user.id)

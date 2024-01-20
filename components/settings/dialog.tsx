@@ -63,7 +63,7 @@ export default function SettingsDialog({ name, username }: settingsDialogProps){
                         <Input {...register("name")} defaultValue={name} />
                     </Label>
                     <Label>
-                        username
+                        username <span className="text-muted-foreground text-xs"> - username changes have a 7 day cooldown</span>
                         <Input {...register("username")} defaultValue={username} maxLength={20}/>
                     </Label>
                     <Label>
