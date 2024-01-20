@@ -96,6 +96,7 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
               autoCapitalize="none"
               autoComplete="off"
               autoCorrect="off"
+              maxLength={20}
               disabled={isCredentialLoading || isGoogleLoading}
               {...register('username')}
             />
