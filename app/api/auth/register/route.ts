@@ -27,11 +27,11 @@ export async function POST(request: Request) {
         return NextResponse.json({ error: "Email is invalid" }, { status: 400 })
     }
 
-    if(data.username != data.username.replace(/\W/ig, "")){
+    if(data.username != data.username.replace(/[^a-zA-Z]/ig, "")){
         return NextResponse.json({ error: "Username must only contain letters" }, { status: 400 })
     }
 
-    if(data.username.length() > 20){
+    if(data.username.length > 20){
         return NextResponse.json({ error: "Username must not exceed 20 characters" }, { status: 400 })
     }
 

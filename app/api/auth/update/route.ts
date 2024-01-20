@@ -11,13 +11,21 @@ const siteUrl = process.env.SITE_URL
 
 export async function PUT(request: Request) {
 
+    const session = await getServerSession(authOptions)
+    if(!session || !session.user){return(NextResponse.json({ error: "Unauthorized" }, { status: 401 }))}
+
     const data = await request.json()
 
     if(!data.name){return NextResponse.json({ error: "No name defined" }, { status: 400 });}
     if(!data.username){return NextResponse.json({ error: "No username defined" }, { status: 400 });}
 
-    const session = await getServerSession(authOptions)
-    if(!session || !session.user){return(NextResponse.json({ error: "Unauthorized" }, { status: 401 }))}
+    if(data.username != data.username.replace(/[^a-zA-Z]/ig, "")){
+        return NextResponse.json({ error: "Username must only contain letters" }, { status: 400 })
+    }
+
+    if(data.username.length > 20){
+        return NextResponse.json({ error: "Username must not exceed 20 characters" }, { status: 400 })
+    }
 
     const existingUserWithUsernameCheck = await prisma.user.findFirst({where: {username: data.username}})
     if(existingUserWithUsernameCheck && !(data.username == session.user.username)){return(NextResponse.json({ error: "Someone already has that username" }, { status: 400 }))}
