@@ -49,6 +49,14 @@ export default async function Confirm({ params }: paramProps) {
         ACIA.newPasswordHash = ""
     }
 
+    if(user.username != ACIA.newUsername){
+        await prisma.user.update({where: {id: user.id},
+            data: {
+                lastUsernameChangeDate: new Date()
+            }
+        })
+    }
+
     await prisma.user.update({
         where: {
             id: user.id

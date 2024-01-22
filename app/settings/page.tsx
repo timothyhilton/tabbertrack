@@ -48,7 +48,7 @@ export default async function SettingsPage(){
                         </div>
                     </CardContent>
                     <CardFooter className="space-x-6">
-                        <SettingsDialog name={session.user.name!} username={session.user.username} email={session.user.email!} />
+                        <SettingsDialog name={session.user.name!} username={session.user.username} />
                         <EmailDialog />
                     </CardFooter>
                 </Card>

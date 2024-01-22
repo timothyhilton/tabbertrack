@@ -12,16 +12,20 @@ const siteUrl = process.env.SITE_URL
 
 export async function PUT(request: Request) {
 
+    const session = await getServerSession(authOptions)
+    if(!session || !session.user){return(NextResponse.json({ error: "Unauthorized" }, { status: 401 }))}
+
     const data = await request.json()
 
     if(!data.email){return NextResponse.json({ error: "No email defined" }, { status: 400 });}
+
+    if(await prisma.user.findFirst({where:{email: data.email}})){
+        return NextResponse.json({ error: "Someone already has that email" }, { status: 400 })
+    }
     
     if(!validate(data.email)){
         return NextResponse.json({ error: "Email is invalid" }, { status: 400 })
     }
-
-    const session = await getServerSession(authOptions)
-    if(!session || !session.user){return(NextResponse.json({ error: "Unauthorized" }, { status: 401 }))}
 
     const user = (await prisma.user.findFirst({
         where: {

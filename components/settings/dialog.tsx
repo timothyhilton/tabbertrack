@@ -13,11 +13,10 @@ import { signOut, useSession } from 'next-auth/react'
 
 interface settingsDialogProps {
     name: string,
-    username: string,
-    email: string
+    username: string
 }
 
-export default function SettingsDialog({ name, username, email }: settingsDialogProps){
+export default function SettingsDialog({ name, username }: settingsDialogProps){
     const { data: session, status } = useSession()
     const { register, handleSubmit } = useForm()
     const [error, setError] = useState("")
@@ -64,8 +63,8 @@ export default function SettingsDialog({ name, username, email }: settingsDialog
                         <Input {...register("name")} defaultValue={name} />
                     </Label>
                     <Label>
-                        username
-                        <Input {...register("username")} defaultValue={username} />
+                        username <span className="text-muted-foreground text-xs"> - username changes have a 7 day cooldown</span>
+                        <Input {...register("username")} defaultValue={username} maxLength={20}/>
                     </Label>
                     <Label>
                         password <span className="text-muted-foreground text-xs"> - leave this blank to not change your password</span>
