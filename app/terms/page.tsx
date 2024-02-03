@@ -16,16 +16,22 @@ export default function Terms(){
 
                 <p>The following terminology applies to these Terms and Conditions, Privacy Statement and Disclaimer Notice and all Agreements: &quot;Client&quot;, &quot;You&quot; and &quot;Your&quot; refers to you, the person log on this website and compliant to the Company’s terms and conditions. &quot;The Company&quot;, &quot;Ourselves&quot;, &quot;We&quot;, &quot;Our&quot; and &quot;Us&quot;, refers to our Company. &quot;Party&quot;, &quot;Parties&quot;, or &quot;Us&quot;, refers to both the Client and ourselves. All terms refer to the offer, acceptance and consideration of payment necessary to undertake the process of our assistance to the Client in the most appropriate manner for the express purpose of meeting the Client’s needs in respect of provision of the Company’s stated services, in accordance with and subject to, prevailing law of Netherlands. Any use of the above terminology or other words in the singular, plural, capitalization and/or he/she or they, are taken as interchangeable and therefore as referring to same. Our Terms and Conditions were created with the help of the <a href="https://www.privacypolicyonline.com/terms-conditions-generator/">Terms & Conditions Generator</a>.</p>
 
-                <h3><strong>Cookies</strong></h3>
+                <h3 className="text-xl my-4"><strong>Sign in with Google</strong></h3>
+
+                <p>To manage access to your Google Account, navigate to your Google Account settings, click on "Security," and then select "Manage third-party access." Here, you can review and control the apps and websites connected to your account, ensuring secure and authorized access.</p>
+
+                <p>To learn more about how Google helps users share their data safely, visit the following link to access a Google article on the topic: <Link href="https://support.google.com/accounts/answer/12921417?hl=en" className="font-medium text-primary underline underline-offset-4">How Sign in with Google helps you share data safely</Link></p>
+
+                <h3 className="text-xl my-4"><strong>Cookies</strong></h3>
 
                 <p>We employ the use of cookies. By accessing TabberTrack, you agreed to use cookies in agreement with the TabberTrack&apos;s Privacy Policy.</p>
 
                 <p>Most interactive websites use cookies to let us retrieve the user&apos;s details for each visit. Cookies are used by our website to enable the functionality of certain areas to make it easier for people visiting our website. Some of our affiliate/advertising partners may also use cookies.</p>
 
-                <h3><strong>License</strong></h3>
+                <h3 className="text-xl my-4"><strong>License</strong></h3>
 
                 <p>Unless otherwise stated, TabberTrack and/or its licensors own the intellectual property rights for all material on TabberTrack. All intellectual property rights are reserved. You may access this from TabberTrack for your own personal use subjected to restrictions set in these terms and conditions.</p>
-
+                <br/>
                 <p>You must not:</p>
                 <ul>
                     <li>Republish material from TabberTrack</li>
@@ -33,7 +39,7 @@ export default function Terms(){
                     <li>Reproduce, duplicate or copy material from TabberTrack</li>
                     <li>Redistribute content from TabberTrack</li>
                 </ul>
-
+                <br/>
                 <p>This Agreement shall begin on the date hereof.</p>
 
                 <p>Parts of this website offer an opportunity for users to post and exchange opinions and information in certain areas of the website. TabberTrack does not filter, edit, publish or review Comments prior to their presence on the website. Comments do not reflect the views and opinions of TabberTrack,its agents and/or affiliates. Comments reflect the views and opinions of the person who post their views and opinions. To the extent permitted by applicable laws, TabberTrack shall not be liable for the Comments or for any liability, damages or expenses caused and/or suffered as a result of any use of and/or posting of and/or appearance of the Comments on this website.</p>
@@ -51,7 +57,7 @@ export default function Terms(){
 
                 <p>You hereby grant TabberTrack a non-exclusive license to use, reproduce, edit and authorize others to use, reproduce and edit any of your Comments in any and all forms, formats or media.</p>
 
-                <h3><strong>Hyperlinking to our Content</strong></h3>
+                <h3 className="text-xl my-4"><strong>Hyperlinking to our Content</strong></h3>
 
                 <p>The following organizations may link to our Website without prior written approval:</p>
 
@@ -93,25 +99,25 @@ export default function Terms(){
 
                 <p>No use of TabberTrack&apos;s logo or other artwork will be allowed for linking absent a trademark license agreement.</p>
 
-                <h3><strong>iFrames</strong></h3>
+                <h3 className="text-xl my-4"><strong>iFrames</strong></h3>
 
                 <p>Without prior approval and written permission, you may not create frames around our Webpages that alter in any way the visual presentation or appearance of our Website.</p>
 
-                <h3><strong>Content Liability</strong></h3>
+                <h3 className="text-xl my-4"><strong>Content Liability</strong></h3>
 
                 <p>We shall not be hold responsible for any content that appears on your Website. You agree to protect and defend us against all claims that is rising on your Website. No link(s) should appear on any Website that may be interpreted as libelous, obscene or criminal, or which infringes, otherwise violates, or advocates the infringement or other violation of, any third party rights.</p>
 
-                <h3><strong>Reservation of Rights</strong></h3>
+                <h3 className="text-xl my-4"><strong>Reservation of Rights</strong></h3>
 
                 <p>We reserve the right to request that you remove all links or any particular link to our Website. You approve to immediately remove all links to our Website upon request. We also reserve the right to amen these terms and conditions and it&apos;s linking policy at any time. By continuously linking to our Website, you agree to be bound to and follow these linking terms and conditions.</p>
 
-                <h3><strong>Removal of links from our website</strong></h3>
+                <h3 className="text-xl my-4"><strong>Removal of links from our website</strong></h3>
 
                 <p>If you find any link on our Website that is offensive for any reason, you are free to contact and inform us any moment. We will consider requests to remove links but we are not obligated to or so or to respond to you directly.</p>
 
                 <p>We do not ensure that the information on this website is correct, we do not warrant its completeness or accuracy; nor do we promise to ensure that the website remains available or that the material on the website is kept up to date.</p>
 
-                <h3><strong>Disclaimer</strong></h3>
+                <h3 className="text-xl my-4"><strong>Disclaimer</strong></h3>
 
                 <p>To the maximum extent permitted by applicable law, we exclude all representations, warranties and conditions relating to our website and the use of this website. Nothing in this disclaimer will:</p>
 
