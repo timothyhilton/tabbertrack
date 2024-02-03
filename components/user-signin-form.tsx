@@ -68,8 +68,8 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
                 </AlertDescription>
               </Alert>
             }
-            <Label className="sr-only" htmlFor="email">
-              Email
+            <Label htmlFor="email" className="">
+              email
             </Label>
             <Input
               id="email"
@@ -83,8 +83,8 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
             />
           </div>
           <div className="grid gap-1">
-            <Label className="sr-only" htmlFor="password">
-              Password
+            <Label htmlFor="password" className="">
+              password
             </Label>
             <Input
               id="password"

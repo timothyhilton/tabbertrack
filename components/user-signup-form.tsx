@@ -71,8 +71,8 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
             </Alert>
           }
           <div className="grid gap-1">
-            <Label className="sr-only" htmlFor="email">
-              Name
+            <Label htmlFor="email">
+              name
             </Label>
             <Input
               id="name"
@@ -86,12 +86,12 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
             />
           </div>
           <div className="grid gap-1">
-            <Label className="sr-only" htmlFor="email">
-              Username
+            <Label htmlFor="email">
+              username
             </Label>
             <Input
               id="username"
-              placeholder="username"
+              placeholder="Username"
               type="username"
               autoCapitalize="none"
               autoComplete="off"
@@ -102,8 +102,8 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
             />
           </div>
           <div className="grid gap-1">
-            <Label className="sr-only" htmlFor="email">
-              Email
+            <Label htmlFor="email">
+              email
             </Label>
             <Input
               id="email"
@@ -117,8 +117,8 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
             />
           </div>
           <div className="grid gap-1">
-            <Label className="sr-only" htmlFor="password">
-              Password
+            <Label htmlFor="password">
+              password
             </Label>
             <Input
               id="password"
