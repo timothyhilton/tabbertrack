@@ -6,6 +6,7 @@ import { useForm } from "react-hook-form";
 import { Input } from "../ui/input";
 import { Alert, AlertDescription, AlertTitle } from "../ui/alert";
 import { useRouter } from "next/navigation";
+import { Label } from "../ui/label";
 
 export function AddFriendDialog(){
     const [friendType, setFriendType] = useState("")
@@ -54,9 +55,12 @@ function RegisteredFriendForm(){
     const [errorBoxColour, setErrorBoxColour] = useState("")
 
     async function onSubmit(data: any){
+        let realData = data; // SEE MY COMMENT BELOW IN THE JSX ABOUT THIS! I KNOW ITS BAD, I APOLOGISE IN ADVANCE
+        realData.username = realData.usernamee;
+
         const res = await fetch("/api/friends", {
             method: "POST",
-            body: JSON.stringify(data)
+            body: JSON.stringify(realData)
         })
 
         const resJSON = await res.json()
@@ -71,7 +75,7 @@ function RegisteredFriendForm(){
     }
 
     return (
-        <form className="pt-5 space-y-2" onSubmit={handleSubmit(onSubmit)}>
+        <form className="space-y-2" onSubmit={handleSubmit(onSubmit)}>
             {error &&
               <Alert className={`bg-red-500 ${errorBoxColour}`}>
                 <AlertTitle>Hey!</AlertTitle>
@@ -80,7 +84,10 @@ function RegisteredFriendForm(){
                 </AlertDescription>
               </Alert>
             }
-            <Input placeholder="username" {...register("username")} />
+            <Label htmlFor="username">
+              username of your friend
+              <Input placeholder="username" {...register("usernamee")} /> {/*JANKY, I KNOW but the browser will prefill this field with the username of the user as if they're logging in if I don't do this.*/}
+            </Label>
             
             <Button className="w-full">
                 Send request
@@ -113,7 +120,7 @@ function UnRegisteredFriendForm(){
     }
 
     return (
-        <form className="pt-5 space-y-2" onSubmit={handleSubmit(onSubmit)}>
+        <form className="space-y-2" onSubmit={handleSubmit(onSubmit)}>
             {error &&
               <Alert className={`bg-red-500 ${errorBoxColour}`}>
                 <AlertTitle>Hey!</AlertTitle>
@@ -122,7 +129,10 @@ function UnRegisteredFriendForm(){
                 </AlertDescription>
               </Alert>
             }
-            <Input placeholder="name" {...register("name")} />
+            <Label htmlFor="name">
+              name of external friend
+              <Input placeholder="name" {...register("name")} />
+            </Label>
             
             <Button className="w-full">
                 Add unregistered friend

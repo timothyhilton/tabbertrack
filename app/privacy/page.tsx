@@ -16,6 +16,12 @@ export default function Privacy(){
 
                 <p>The terms used in this Privacy Policy have the same meanings as in our Terms and Conditions, which is accessible at https://www.tabbertrack.com, unless otherwise defined in this Privacy Policy.</p>
 
+                <h3 className="text-xl my-4">Sign in with Google</h3>
+
+                <p>To manage access to your Google Account, navigate to your Google Account settings, click on &quot;Security,&quot; and then select &quot;Manage third-party access.&quot; Here, you can review and control the apps and websites connected to your account, ensuring secure and authorized access.</p>
+
+                <p>To learn more about how Google helps users share their data safely, visit the following link to access a Google article on the topic: <Link href="https://support.google.com/accounts/answer/12921417?hl=en" className="font-medium text-primary underline underline-offset-4">How Sign in with Google helps you share data safely</Link></p>
+
                 <h2 className="text-xl my-4">Information Collection and Use</h2>
 
                 <p>For a better experience while using our Service, we may require you to provide us with certain personally identifiable information, including but not limited to your name, phone number, and postal address. The information that we collect will be used to contact or identify you.</p>
