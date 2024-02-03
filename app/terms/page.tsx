@@ -18,7 +18,7 @@ export default function Terms(){
 
                 <h3 className="text-xl my-4"><strong>Sign in with Google</strong></h3>
 
-                <p>To manage access to your Google Account, navigate to your Google Account settings, click on "Security," and then select "Manage third-party access." Here, you can review and control the apps and websites connected to your account, ensuring secure and authorized access.</p>
+                <p>To manage access to your Google Account, navigate to your Google Account settings, click on &quot;Security,&quot; and then select &quot;Manage third-party access.&quot; Here, you can review and control the apps and websites connected to your account, ensuring secure and authorized access.</p>
 
                 <p>To learn more about how Google helps users share their data safely, visit the following link to access a Google article on the topic: <Link href="https://support.google.com/accounts/answer/12921417?hl=en" className="font-medium text-primary underline underline-offset-4">How Sign in with Google helps you share data safely</Link></p>
 
