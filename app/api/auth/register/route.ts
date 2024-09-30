@@ -5,10 +5,14 @@ import { NextResponse } from 'next/server'
 import { Client } from 'postmark';
 import prisma from '@/db';
 import { validate } from 'email-validator';
+import Mailjet from 'node-mailjet';
 
-const postmarkClient = new Client(process.env.POSTMARK_SERVER_TOKEN!)
-const siteUrl = process.env.SITE_URL
-const bypassEmailVerification = process.env.BYPASS_EMAIL_VERIFICATION
+const mailjetClient = new Mailjet({
+  apiKey: process.env.MAILJET_API_KEY,
+  apiSecret: process.env.MAILJET_SECRET_KEY
+});
+const siteUrl = process.env.SITE_URL;
+const bypassEmailVerification = process.env.BYPASS_EMAIL_VERIFICATION;
 
 export async function POST(request: Request) {
 
@@ -81,17 +85,23 @@ export async function POST(request: Request) {
     // send verification email to user
 
     try{ 
-        const email = await postmarkClient.sendEmailWithTemplate({
-            "From": "verify@tabbertrack.com",
-            "To": user.email,
-            "TemplateAlias": "verify",
-            "TemplateModel": {
-            "person": {
-                "name": user.name,
-                "activationToken": token.token
-            },
-            "siteUrl": siteUrl
-        }})
+        const email = await mailjetClient
+            .post('send', { version: 'v3.1' })
+            .request({
+                Messages: [
+                    {
+                        From: { Email: 'verify@tabbertrack.com', Name: 'TabberTrack' },
+                        To: [{ Email: user.email, Name: user.name }],
+                        TemplateID: 6335295,
+                        TemplateLanguage: true,
+                        Variables: {
+                            name: user.name,
+                            siteUrl: siteUrl,
+                            activationToken: token.token
+                        }
+                    }
+                ]
+            });
     }
     catch(e) {
         return NextResponse.json({ error: "Something went wrong" }, { status: 400 })
