@@ -30,7 +30,7 @@
     "email-validator": "^2.0.4",
     "javascript-time-ago": "^2.5.9",
     "lucide-react": "^0.284.0",
-    "next": "13.5.4",
+    "next": "^14.2.13",
     "next-auth": "^4.23.2",
     "next-themes": "^0.2.1",
     "postmark": "^4.0.2",

@@ -8,6 +8,7 @@ import { validate } from 'email-validator';
 
 const postmarkClient = new Client(process.env.POSTMARK_SERVER_TOKEN!)
 const siteUrl = process.env.SITE_URL
+const bypassEmailVerification = process.env.BYPASS_EMAIL_VERIFICATION
 
 export async function POST(request: Request) {
 
@@ -63,7 +64,8 @@ export async function POST(request: Request) {
             email: data.email as string,
             username: data.username as string,
             password: password,
-            credentialsProvider: true
+            credentialsProvider: true,
+            active: bypassEmailVerification === "true" ? true : false
         }
     })
 
