@@ -1,10 +1,10 @@
 import { getServerSession } from "next-auth";
 import { NextResponse } from "next/server";
-import { authOptions } from "../[...nextauth]/route";
 import prisma from "@/db";
 import { hash } from "bcrypt";
 import { randomUUID } from "crypto";
 import { Client } from "postmark";
+import { authOptions } from "@/auth_options";
 
 const postmarkClient = new Client(process.env.POSTMARK_SERVER_TOKEN!)
 const siteUrl = process.env.SITE_URL

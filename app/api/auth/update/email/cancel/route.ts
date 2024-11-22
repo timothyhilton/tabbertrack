@@ -1,10 +1,7 @@
 import { getServerSession } from "next-auth";
 import { NextResponse } from "next/server";
-import { authOptions } from "../../../[...nextauth]/route";
 import prisma from "@/db";
-import { hash } from "bcrypt";
-import { randomUUID } from "crypto";
-import { Client } from "postmark";
+import { authOptions } from "@/auth_options";
 
 export async function PUT(request: Request) {
 

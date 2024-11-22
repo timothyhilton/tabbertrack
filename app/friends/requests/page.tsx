@@ -5,7 +5,7 @@ import { redirect } from "next/navigation";
 import prisma from "@/db";
 import UnFriendButton from "@/components/friends/list/unfriend-button";
 import SentFriendReqTable from "@/components/friends/requests/sent-friendreq-table";
-import { authOptions } from "@/app/api/auth/[...nextauth]/route";
+import { authOptions } from "@/auth_options";
 import { NavBar } from "@/app/navbar";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";

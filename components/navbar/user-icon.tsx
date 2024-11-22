@@ -3,7 +3,7 @@ import { DropdownMenu, DropdownMenuContent, DropdownMenuGroup, DropdownMenuItem,
 import { LoginButton, LogoutDropdownMenuItem } from "@/components/auth";
 import prisma from "@/db";
 import { getServerSession } from "next-auth";
-import { authOptions } from "@/app/api/auth/[...nextauth]/route";
+import { authOptions } from "@/auth_options";
 import { Button } from "../ui/button";
 import Link from "next/link";
 import NotificationBubble from "../notifications/notification-bubble";

@@ -1,10 +1,8 @@
-import { authOptions } from './api/auth/[...nextauth]/route'
-import { LoginButton } from '../components/auth'
 import { getServerSession } from 'next-auth'
-import { ModeToggle } from '@/components/ui/modetoggle'
 import { NavBar } from './navbar'
 import { Button } from '@/components/ui/button'
 import Link from 'next/link'
+import { authOptions } from '@/auth_options'
 
 export default async function Home() {
   const session = await getServerSession(authOptions)

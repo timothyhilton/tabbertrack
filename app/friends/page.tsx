@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import { redirect } from "next/navigation";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { getServerSession } from "next-auth";
-import { authOptions } from "../api/auth/[...nextauth]/route";
+import { authOptions } from "@/auth_options";
 import prisma from "@/db";
 import FriendTable from "@/components/friends/list/friend-table";
 import ExternalFriendTable from "@/components/friends/list/external-friend-table";

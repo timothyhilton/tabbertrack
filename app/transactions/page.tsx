@@ -1,5 +1,5 @@
 import { getServerSession } from "next-auth";
-import { authOptions } from "../api/auth/[...nextauth]/route";
+import { authOptions } from "@/auth_options";
 import { NavBar } from "../navbar";
 import prisma from "@/db";
 import { redirect } from "next/navigation";

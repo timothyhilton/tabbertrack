@@ -1,12 +1,11 @@
 import { Button } from "@/components/ui/button";
 import { getServerSession } from "next-auth";
-import { authOptions } from "./api/auth/[...nextauth]/route";
-
 import { Icons } from "@/components/ui/icons";
 import Link from "next/link";
 import { ModeToggle } from "@/components/ui/modetoggle";
 import UserIcon from "@/components/navbar/user-icon";
 import { LoginButton } from "@/components/auth";
+import { authOptions } from "@/auth_options";
 
 
 export async function NavBar(){

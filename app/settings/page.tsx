@@ -1,7 +1,7 @@
 import { Card } from "@/components/ui/card";
 import { NavBar } from "../navbar";
 import { getServerSession } from "next-auth";
-import { authOptions } from "../api/auth/[...nextauth]/route";
+import { authOptions } from "@/auth_options";
 import { redirect } from "next/navigation";
 import {
     CardContent,

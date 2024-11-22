@@ -1,10 +1,7 @@
 import { Metadata } from "next"
-import Image from "next/image"
 import Link from "next/link"
-
-import { cn } from "@/lib/utils"
-import { buttonVariants } from "@/components/ui/button"
 import { UserAuthForm } from "@/components/user-signin-form"
+import { Suspense } from "react"
 
 export const metadata: Metadata = {
   title: "Login - TabberTrack",
@@ -25,7 +22,9 @@ export default function AuthenticationPage() {
                 Enter your email and password below to continue
               </div>
             </div>
-            <UserAuthForm />
+            <Suspense fallback={<div>loading...</div>}>
+              <UserAuthForm />
+            </Suspense>
             <div className="px-8 text-center text-sm text-muted-foreground">
               By clicking continue, you agree to our{" "}
               <Link

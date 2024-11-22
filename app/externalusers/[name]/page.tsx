@@ -1,4 +1,4 @@
-import { authOptions } from "@/app/api/auth/[...nextauth]/route"
+import { authOptions } from "@/auth_options"
 import { NavBar } from "@/app/navbar"
 import UnfriendButton from "@/components/friends/list/unfriend-button"
 import ReceivedTransactionsTable from "@/components/transactions/received-transactions-table"
