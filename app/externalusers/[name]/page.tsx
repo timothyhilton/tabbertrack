@@ -1,12 +1,12 @@
 import { authOptions } from "@/auth_options"
 import { NavBar } from "@/app/navbar"
 import UnfriendButton from "@/components/friends/list/unfriend-button"
-import ReceivedTransactionsTable from "@/components/transactions/received-transactions-table"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Card, CardContent, CardDescription, CardTitle } from "@/components/ui/card"
 import prisma from "@/db"
 import { getServerSession } from "next-auth"
 import { redirect } from "next/navigation"
+import ExternalTransactionTable from "@/components/transactions/external-transactions-table"
 
 interface paramProps{
     params: { name: string }
@@ -30,32 +30,23 @@ export default async function UserPage({ params }: paramProps){
         redirect('/404')
     }
 
-    const transactionsForTable = await Promise.all((await prisma.externalTransaction.findMany({
-        where: {
-            userId: userId,
-            externalFriendId: externalFriend.id
-        }
-    })).map(async transaction => {
-        return {
-            name: externalFriend.name,
-            amount: transaction.amount,
-            status: "accepted", 
-            createdAt: transaction.createdAt,
-            id: transaction.id,
-            description: transaction.description,
-            doesSenderOwe: !transaction.doesUserOwe,
-        }
-    }))
-
     const transactions = await prisma.externalTransaction.findMany({
         where: {
             userId: userId,
             externalFriendId: externalFriend.id
         }
     })
+
+    const transactionsForTable = transactions.map(transaction => ({
+        name: externalFriend.name,
+        amount: transaction.amount,
+        createdAt: transaction.createdAt,
+        description: transaction.description,
+        doesSenderOwe: transaction.doesUserOwe,
+        id: transaction.id
+    }))
     
     let amountOwed = 0
-
     transactions.forEach(transaction => {
         if (!transaction.doesUserOwe) {
             amountOwed += transaction.amount
@@ -108,7 +99,7 @@ export default async function UserPage({ params }: paramProps){
                 <h1 className="mb-1 mt-8 text-xl flex font-semibold">
                     Transactions
                 </h1>
-                <ReceivedTransactionsTable receivedTransactionRequests={transactionsForTable}/>
+                <ExternalTransactionTable transactions={transactionsForTable}/>
             </div>
         </>
     )

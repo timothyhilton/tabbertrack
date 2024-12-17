@@ -4,62 +4,58 @@ import { NavBar } from "../navbar";
 import prisma from "@/db";
 import { redirect } from "next/navigation";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import SentTransactionsTable from "@/components/transactions/sent-transactions-table";
-import ReceivedTransactionsTable from "@/components/transactions/received-transactions-table";
+import TransactionsTable from "@/components/transactions/transactions-table";
+import ExternalTransactionTable from "@/components/transactions/external-transactions-table";
 
 export default async function Transactions(){
     const session = await getServerSession(authOptions)
     if(!session){
         redirect('/api/auth/signin')
     }
+    const userId = parseInt(session.user!.id)
     
-    const sentFriendRequests = await prisma.transaction.findMany({
+    const transactions = await prisma.transaction.findMany({
         where: {
-            fromUserId: parseInt(session.user!.id)
+            OR: [
+                { fromUserId: userId },
+                { toUserId: userId }
+            ]
+        },
+        include: {
+            from: true,
+            to: true
         }
     })
 
-    const receivedFriendRequests = await prisma.transaction.findMany({
+    const externalTransactions = await prisma.externalTransaction.findMany({
         where: {
-            toUserId: parseInt(session.user!.id)
+            userId: userId
+        },
+        include: {
+            externalFriend: true
         }
     })
 
-    async function getNamesFromId(id: number){
-        const user = await prisma.user.findFirst({
-            where: {
-                id: id
-            }
-        })
-        return { name: user!.name! , username: user!.username }
-    }
+    const transactionProps = transactions.map(transaction => ({
+        otherUser: transaction.fromUserId === userId ? transaction.to.name ?? "Unknown" : transaction.from.name ?? "Unknown",
+        otherUsername: transaction.fromUserId === userId ? transaction.to.username : transaction.from.username,
+        amount: transaction.amount,
+        status: transaction.status,
+        createdAt: transaction.createdAt,
+        id: transaction.id,
+        description: transaction.description,
+        doesSenderOwe: transaction.doesSenderOwe,
+        direction: (transaction.fromUserId === userId ? "sent" : "received") as ("sent" | "received")
+    }))
 
-    const sentTransactionProps = await Promise.all(sentFriendRequests
-        .map(async request => {
-            return {
-                ...(await getNamesFromId(request.toUserId)),
-                amount: request.amount,
-                status: request.status,
-                createdAt: request.createdAt,
-                description: request.description,
-                doesSenderOwe: request.doesSenderOwe
-            }
-        }))
-
-        // oh. my. goodness. 'await Promise.all()' is the silliest thing ive seen in my life but for some reason I can't just await it directly. WHY???
-
-    const receivedTransactionProps = await Promise.all(receivedFriendRequests
-        .map(async request => {
-            return {
-                ...(await getNamesFromId(request.fromUserId)),
-                amount: request.amount,
-                status: request.status,
-                createdAt: request.createdAt,
-                id: request.id,
-                description: request.description,
-                doesSenderOwe: request.doesSenderOwe
-            }
-        }))
+    const externalTransactionProps = externalTransactions.map(transaction => ({
+        name: transaction.externalFriend.name,
+        amount: transaction.amount,
+        createdAt: transaction.createdAt,
+        description: transaction.description,
+        doesSenderOwe: transaction.doesUserOwe,
+        id: transaction.id
+    }))
 
     return(
         <>
@@ -71,14 +67,14 @@ export default async function Transactions(){
                 <div className="flex justify-center">
                     <Tabs defaultValue="received" className="lg:w-[89%]">
                         <TabsList className="grid grid-cols-2">
-                            <TabsTrigger value="received">Received Transaction Requests</TabsTrigger>
-                            <TabsTrigger value="sent">Sent Transaction Requests</TabsTrigger>
+                            <TabsTrigger value="received">Friends on TabberTrack</TabsTrigger>
+                            <TabsTrigger value="sent">Unregistered Friends</TabsTrigger>
                         </TabsList>
                         <TabsContent value="received">
-                            <ReceivedTransactionsTable receivedTransactionRequests={receivedTransactionProps} />
+                            <TransactionsTable transactions={transactionProps} />
                         </TabsContent>
                         <TabsContent value="sent">
-                            <SentTransactionsTable sentTransactionRequests={sentTransactionProps} />
+                            <ExternalTransactionTable transactions={externalTransactionProps} />
                         </TabsContent>
                     </Tabs>
                 </div>
