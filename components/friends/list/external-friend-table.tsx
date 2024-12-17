@@ -15,10 +15,10 @@ export default function ExternalFriendTable({ friends }: ExternalFriendTableProp
                 <Table>
                     <TableHeader>
                         <TableRow>
-                            <TableHead className="text-xs md:text-sm">User</TableHead>
+                            <TableHead className="text-xs md:text-sm">Name</TableHead>
                             <TableHead className="text-xs md:text-sm"></TableHead>
                             <TableHead className="text-xs md:text-sm"></TableHead> {/* no idea why, but without this empty one the styling gets all messed up */}
-                            <TableHead className="text-right text-xs md:text-sm">Unfriend</TableHead>
+                            <TableHead className="text-right text-xs md:text-sm">Remove</TableHead>
                         </TableRow>
                     </TableHeader>
                     <TableBody>

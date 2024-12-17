@@ -68,7 +68,7 @@ export default async function Friends(){
                     <Tabs defaultValue="internal" className="lg:w-[60%] md:w-[70%] w-full">
                         <TabsList className="grid grid-cols-2">
                             <TabsTrigger value="internal">Friends on TabberTrack</TabsTrigger>
-                            <TabsTrigger value="external">External Friends</TabsTrigger>
+                            <TabsTrigger value="external">Unregistered Friends</TabsTrigger>
                         </TabsList>
                         <TabsContent value="internal">
                             <FriendTable friends={friends}/>
