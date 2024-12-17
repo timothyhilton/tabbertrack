@@ -1,7 +1,6 @@
 import { authOptions } from "@/auth_options"
 import { NavBar } from "@/app/navbar"
 import UnfriendButton from "@/components/friends/list/unfriend-button"
-import ReceivedTransactionsTable from "@/components/transactions/received-transactions-table"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Card, CardContent, CardDescription, CardTitle } from "@/components/ui/card"
 import prisma from "@/db"
@@ -38,8 +37,8 @@ export default async function UserPage({ params }: paramProps){
     const transactions = await prisma.transaction.findMany({
         where: {
             OR: [
-                { fromUserId: userId },
-                { toUserId: userId }
+                { fromUserId: userId, toUserId: user.id },
+                { fromUserId: user.id, toUserId: userId }
             ]
         },
         include: {
