@@ -10,21 +10,18 @@ import { useEffect, useState } from "react"
 import TimeAgoWrapper from "../time-ago"
 import UserLink from "../ui/userlink"
 
-interface TransactionsTableProps{
+interface ExternalTransactionsTableProps{
     transactions: {
-        otherUser: string,
-        otherUsername?: string,
+        name: string
         amount: number,
-        status: string,
         createdAt: Date,
-        id: number,
         description: string,
         doesSenderOwe: boolean,
-        direction: "sent" | "received"
+        id: number
     }[]
 }
 
-export default function Transactions({ transactions }: TransactionsTableProps){
+export default function ExternalTransactionTable({ transactions }: ExternalTransactionsTableProps){
     const router = useRouter();
     const [hidden, setHidden] = useState({
         declined: true,
@@ -50,12 +47,10 @@ export default function Transactions({ transactions }: TransactionsTableProps){
                 <Table>
                     <TableHeader>
                         <TableRow>
-                            <TableHead className="text-xs md:text-sm">Sent</TableHead>
+                            <TableHead className="text-xs md:text-sm">Created</TableHead>
                             <TableHead className="text-xs md:text-sm">Friend</TableHead>
                             <TableHead className="text-xs md:text-sm">Description</TableHead>
                             <TableHead className="text-xs md:text-sm">Amount</TableHead>
-                            <TableHead className="text-xs md:text-sm">Direction</TableHead>
-                            <TableHead className="text-right text-xs md:text-sm">Status</TableHead>
                         </TableRow>
                     </TableHeader>
                     <TableBody>
@@ -68,7 +63,7 @@ export default function Transactions({ transactions }: TransactionsTableProps){
                                     </TableCell>
 
                                     <TableCell className="flex flex-col md:flex-row text-xs md:text-sm">
-                                        <UserLink name={transaction.otherUser} username={transaction.otherUsername} link={true} />
+                                        <UserLink name={transaction.name} external={true} link={true} />
                                     </TableCell>
 
                                     <TableCell className="text-xs md:text-sm">
@@ -90,26 +85,6 @@ export default function Transactions({ transactions }: TransactionsTableProps){
                                             {transaction.doesSenderOwe ? ("+") : ("-")} 
                                             {"$" + transaction.amount.toFixed(2)} 
                                         </div>
-                                    </TableCell>
-
-                                    <TableCell>
-                                        {transaction.direction}
-                                    </TableCell>
-
-                                    <TableCell className="flex flex-row justify-end space-x-4">
-                                        {(transaction.status == "pending" && transaction.direction === "received") &&
-                                            <div className="flex flex-row justify-end space-x-4">
-                                                <Button onClick={() => respondToTransactionRequest("accept", transaction.id)} className="bg-green-600 hover:bg-green-700 text-slate-50">
-                                                    Accept
-                                                </Button>
-                                                <Button onClick={() => respondToTransactionRequest("decline", transaction.id)} variant="destructive">
-                                                    Decline
-                                                </Button>
-                                            </div>
-                                        }
-                                        {(transaction.status != "pending" || transaction.direction !== "received") &&
-                                            <div>{transaction.status}</div>
-                                        }
                                     </TableCell>
                                 </TableRow>
                             )

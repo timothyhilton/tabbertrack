@@ -7,6 +7,7 @@ import { Card, CardContent, CardDescription, CardTitle } from "@/components/ui/c
 import prisma from "@/db"
 import { getServerSession } from "next-auth"
 import { redirect } from "next/navigation"
+import TransactionsTable from "@/components/transactions/transactions-table"
 
 interface paramProps{
     params: { username: string }
@@ -18,13 +19,14 @@ export default async function UserPage({ params }: paramProps){
     if(!session){
         redirect('/api/auth/signin')
     }
+    const userId = parseInt(session.user!.id)
 
     const user = await prisma.user.findFirst({
         where: {
             username: username,
             friend: {
                 some: {
-                    id: parseInt(session.user!.id)
+                    id: userId
                 }
             }
         }
@@ -33,62 +35,35 @@ export default async function UserPage({ params }: paramProps){
         redirect('/404')
     }
 
-    const transactionsForTable = await Promise.all((await prisma.transaction.findMany({
-        where: {
-            OR: [
-                {
-                    userWhoIsOwedId: parseInt(session.user!.id),
-                    userWhoOwesId: user.id
-                },
-                {
-                    userWhoOwesId: parseInt(session.user!.id),
-                    userWhoIsOwedId: user.id
-                }
-            ]
-        }
-    })).map(async transaction => {
-        let user
-        if(transaction.fromUserId == parseInt(session.user!.id)){ // if the logged in user sent the transaction, modify the "status" to not show buttons if pending
-            user = await prisma.user.findFirst({where:{id:transaction.toUserId}})
-            transaction.status = (transaction.status == "pending") ? "sent - pending" : ((transaction.status == "accepted") ? "sent - accepted" : "sent - pending") // i know this is wacky, sorry
-            user!.name = session.user!.name!
-            user!.username = session.user!.username
-        } else {
-            user = await prisma.user.findFirst({where:{id:transaction.fromUserId}})
-        }
-
-        return {
-            name: user!.name!,
-            username: user!.username,
-            amount: transaction.amount,
-            status: transaction.status, 
-            createdAt: transaction.createdAt,
-            id: transaction.id,
-            description: transaction.description,
-            doesSenderOwe: transaction.toUserId == parseInt(session.user!.id) ? transaction.doesSenderOwe : !transaction.doesSenderOwe
-        }
-    }))
-
     const transactions = await prisma.transaction.findMany({
         where: {
             OR: [
-                {
-                    userWhoIsOwedId: parseInt(session!.user!.id),
-                    userWhoOwesId: user.id
-                },
-                {
-                    userWhoOwesId: parseInt(session!.user!.id),
-                    userWhoIsOwedId: user.id
-                }
-            ],
-            status: "accepted"
+                { fromUserId: userId },
+                { toUserId: userId }
+            ]
+        },
+        include: {
+            from: true,
+            to: true
         }
     })
+
+    const transactionsForTable = transactions.map(transaction => ({
+        otherUser: transaction.fromUserId === userId ? transaction.to.name ?? "Unknown" : transaction.from.name ?? "Unknown",
+        otherUsername: transaction.fromUserId === userId ? transaction.to.username : transaction.from.username,
+        amount: transaction.amount,
+        status: transaction.status,
+        createdAt: transaction.createdAt,
+        id: transaction.id,
+        description: transaction.description,
+        doesSenderOwe: transaction.doesSenderOwe,
+        direction: (transaction.fromUserId === userId ? "sent" : "received") as ("sent" | "received")
+    }))
     
     let amountOwed = 0
 
     transactions.forEach(transaction => {
-        if (transaction.userWhoIsOwedId == parseInt(session!.user!.id)) {
+        if (transaction.userWhoIsOwedId == userId) {
             amountOwed += transaction.amount
         } else {
             amountOwed -= transaction.amount
@@ -139,7 +114,7 @@ export default async function UserPage({ params }: paramProps){
                 <h1 className="mb-1 mt-8 text-xl flex font-semibold">
                     Transactions
                 </h1>
-                <ReceivedTransactionsTable receivedTransactionRequests={transactionsForTable}/>
+                <TransactionsTable transactions={transactionsForTable}/>
             </div>
         </>
     )

@@ -4,9 +4,8 @@ import { NavBar } from "../navbar";
 import prisma from "@/db";
 import { redirect } from "next/navigation";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import SentTransactionsTable from "@/components/transactions/sent-transactions-table";
-import ReceivedTransactionsTable from "@/components/transactions/received-transactions-table";
 import TransactionsTable from "@/components/transactions/transactions-table";
+import ExternalTransactionTable from "@/components/transactions/external-transactions-table";
 
 export default async function Transactions(){
     const session = await getServerSession(authOptions)
@@ -15,7 +14,6 @@ export default async function Transactions(){
     }
     const userId = parseInt(session.user!.id)
     
-    // Fetch transactions for the logged-in user
     const transactions = await prisma.transaction.findMany({
         where: {
             OR: [
@@ -29,6 +27,15 @@ export default async function Transactions(){
         }
     })
 
+    const externalTransactions = await prisma.externalTransaction.findMany({
+        where: {
+            userId: userId
+        },
+        include: {
+            externalFriend: true
+        }
+    })
+
     const transactionProps = transactions.map(transaction => ({
         otherUser: transaction.fromUserId === userId ? transaction.to.name ?? "Unknown" : transaction.from.name ?? "Unknown",
         otherUsername: transaction.fromUserId === userId ? transaction.to.username : transaction.from.username,
@@ -39,7 +46,16 @@ export default async function Transactions(){
         description: transaction.description,
         doesSenderOwe: transaction.doesSenderOwe,
         direction: (transaction.fromUserId === userId ? "sent" : "received") as ("sent" | "received")
-    }));
+    }))
+
+    const externalTransactionProps = externalTransactions.map(transaction => ({
+        name: transaction.externalFriend.name,
+        amount: transaction.amount,
+        createdAt: transaction.createdAt,
+        description: transaction.description,
+        doesSenderOwe: transaction.doesUserOwe,
+        id: transaction.id
+    }))
 
     return(
         <>
@@ -58,7 +74,7 @@ export default async function Transactions(){
                             <TransactionsTable transactions={transactionProps} />
                         </TabsContent>
                         <TabsContent value="sent">
-                            {/*<SentTransactionsTable sentTransactionRequests={sentTransactionProps} />*/}
+                            <ExternalTransactionTable transactions={externalTransactionProps} />
                         </TabsContent>
                     </Tabs>
                 </div>
