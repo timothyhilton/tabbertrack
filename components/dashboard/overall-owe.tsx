@@ -21,10 +21,10 @@ export default async function OverallOwe() {
         }
     })
 
-    const balances: { [key: number | string]: number } = {}
+    const balances: { [key: string]: number } = {}
 
-    friends.forEach(friend => balances[friend.id] = 0)
-    externalFriends.forEach(friend => balances[friend.name] = 0)
+    friends.forEach(friend => balances[`user-${friend.id}`] = 0)
+    externalFriends.forEach(friend => balances[`ext-${friend.id}`] = 0)
     
     const transactions = await prisma.transaction.findMany({
         where: {
@@ -47,19 +47,24 @@ export default async function OverallOwe() {
     
     transactions.forEach(transaction => {
         if (transaction.userWhoIsOwedId == userId) {
-            balances[transaction.userWhoOwesId] += transaction.amount
+            balances[`user-${transaction.userWhoOwesId}`] += transaction.amount
         } else {
-            balances[transaction.userWhoIsOwedId] -= transaction.amount
+            balances[`user-${transaction.userWhoIsOwedId}`] -= transaction.amount
         }
     })
 
     externalTransactions.forEach(transaction => {
-        let externalFriendName = externalFriends.find(friend => friend.id == transaction.externalFriendId)!.name
+        const externalFriendKey = `ext-${transaction.externalFriendId}`
+
+        if (balances[externalFriendKey] === undefined) {
+             console.warn(`External transaction references non-existent/non-fetched external friend ID: ${transaction.externalFriendId}`)
+             balances[externalFriendKey] = 0
+        }
 
         if (!transaction.doesUserOwe) {
-            balances[externalFriendName] += transaction.amount
+            balances[externalFriendKey] += transaction.amount
         } else {
-            balances[externalFriendName] -= transaction.amount
+            balances[externalFriendKey] -= transaction.amount
         }
     })
 
